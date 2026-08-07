@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #ffffff; color: #1a1420; font-family: "Plus Jakarta Sans", Helvetica, sans-serif; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: #1a1420; text-decoration: none; }
+  a:hover { color: #E0518C; }
+  ::selection { background: #FFD3E4; color: #1a1420; }
+  @keyframes floatA { 0%,100% { transform: translate3d(0,0,0) scale(1) } 50% { transform: translate3d(60px,-40px,0) scale(1.12) } }
+  @keyframes floatB { 0%,100% { transform: translate3d(0,0,0) scale(1.05) } 50% { transform: translate3d(-70px,50px,0) scale(0.92) } }
+  @keyframes spin { to { transform: rotate(360deg) } }
+  @keyframes marquee { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+  @keyframes drift { from { background-position: 0 0 } to { background-position: 44px 44px } }
+  @keyframes gridPan { from { background-position: 0 0, 0 0 } to { background-position: 0 60px, 60px 0 } }
+  @keyframes wordIn { from { opacity: 0; transform: translateY(14px) rotate(1.5deg); filter: blur(6px) } to { opacity: 1; transform: none; filter: none } }
+  @keyframes orbit { from { transform: rotate(0deg) translateX(230px) rotate(0deg) } to { transform: rotate(360deg) translateX(230px) rotate(-360deg) } }
+  @keyframes scan { 0% { top: -10% } 100% { top: 110% } }
+  @keyframes blink { 0%,49% { opacity: 1 } 50%,100% { opacity: 0 } }
+  @keyframes rise { from { opacity: 0; transform: translateY(18px) } to { opacity: 1; transform: none } }
+  @keyframes draw { to { stroke-dashoffset: 0 } }
+  @keyframes drawLoop { 0% { stroke-dashoffset: 300 } 45%, 80% { stroke-dashoffset: 0 } 100% { stroke-dashoffset: -300 } }
+  @keyframes rollIn { from { transform: translateY(100%) } to { transform: translateY(0) } }
+  @keyframes wipeIn { from { clip-path: inset(0 100% 0 0) } to { clip-path: inset(0 -0.1em 0 0) } }
+  ::-webkit-scrollbar { height: 6px; width: 6px }
+  ::-webkit-scrollbar-thumb { background: #F2C4D8; border-radius: 99px }
+</style>
+</helmet>
+<div id="top" style="position: relative">
+
+  <div ref="{{ glowRef }}" style="position: fixed; left: 0; top: 0; width: 520px; height: 520px; margin: -260px 0 0 -260px; border-radius: 50%; background: radial-gradient(circle, rgba(255,111,165,0.38), rgba(165,107,255,0.16) 46%, rgba(255,255,255,0) 70%); filter: blur(46px); pointer-events: none; z-index: 0; opacity: 0; will-change: transform"></div>
+  <div ref="{{ dotRef }}" style="position: fixed; left: 0; top: 0; width: 150px; height: 150px; margin: -75px 0 0 -75px; border-radius: 50%; background: radial-gradient(circle, rgba(255,111,165,0.3), rgba(255,111,165,0) 68%); filter: blur(14px); pointer-events: none; z-index: 0; opacity: 0; will-change: transform"></div>
+
+  <div style="position: absolute; inset: 0; height: 900px; pointer-events: none; overflow: hidden">
+    <div style="position: absolute; inset: 0; background-image: linear-gradient(rgba(26,20,32,0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(26,20,32,0.055) 1px, transparent 1px); background-size: 100% 72px, 72px 100%; animation: gridPan 14s linear infinite; -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 72%); mask-image: linear-gradient(180deg, #000 0%, transparent 72%)"></div>
+    <div style="position: absolute; top: -320px; right: -200px; width: 720px; height: 720px; border-radius: 50%; background: radial-gradient(circle, rgba(255,176,210,0.5), rgba(255,176,210,0) 68%); filter: blur(30px)"></div>
+
+  </div>
+
+  <div style="position: relative; max-width: 1240px; margin: 0 auto; padding: 0 32px">
+
+    <header style="position: sticky; top: 14px; z-index: 40; display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 18px; padding: 12px 12px 12px 24px; border-radius: 999px; background: rgba(255,252,253,0.94); backdrop-filter: blur(20px) saturate(1.6); border: 1px solid rgba(224,81,140,0.14); box-shadow: 0 4px 12px rgba(26,20,32,0.04), 0 18px 44px rgba(196,120,160,0.16)">
+      <div style="display: flex; align-items: center; gap: 14px">
+        <a href="#top" style="font-weight: 700; font-size: 16px; letter-spacing: -0.01em">Amber<span style="color: #E0518C">.</span></a>
+        <span style="width: 1px; height: 16px; background: rgba(26,20,32,0.14)"></span>
+        <span style="font-size: 12.5px; font-weight: 500; color: #9A8391; white-space: nowrap">{{ t.basedInline }}</span>
+      </div>
+      <nav style="display: flex; gap: 6px; font-size: 13.5px; font-weight: 500">
+        <sc-for list="{{ navItems }}" as="nv" hint-placeholder-count="6">
+          <a href="{{ nv.href }}" style="{{ nv.style }}" style-hover="color: #E0518C">{{ nv.label }}</a>
+        </sc-for>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <div style="display: flex; padding: 3px; border-radius: 999px; background: #F7EEF3; font-size: 12px; font-weight: 600">
+          <button type="button" onClick="{{ setEn }}" style="{{ enBtnStyle }}">EN</button>
+          <button type="button" onClick="{{ setSv }}" style="{{ svBtnStyle }}">SV</button>
+        </div>
+      </div>
+    </header>
+
+    <section onMouseMove="{{ onHeroMove }}" style="display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 40px; align-items: center; padding: 56px 0 44px">
+      <div>
+        <div style="display: inline-flex; align-items: center; gap: 9px; padding: 8px 16px; border-radius: 999px; background: #FFF0F6; font-size: 12.5px; font-weight: 600; color: #E0518C; margin-bottom: 20px; white-space: nowrap">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: #E0518C"></span>{{ t.openTo }}
+        </div>
+        <h1 style="font-family: 'Plus Jakarta Sans', Helvetica, sans-serif; font-size: 26px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 12px; color: rgba(26,20,32,0.6)">{{ t.greeting }}</h1>
+        <div style="font-size: clamp(42px, 5vw, 66px); font-weight: 800; letter-spacing: -0.04em; line-height: 1.06; margin-bottom: 22px">
+          <div>{{ t.buildLead }}</div>
+          <div style="display: block; height: 1.34em; overflow: hidden; margin: -0.14em 0; background: linear-gradient(135deg,#FF6FA5,#A56BFF); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent">{{ rotEl }}</div>
+          <div>{{ t.buildTail }}</div>
+        </div>
+        <div style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 10.5px; font-weight: 500; letter-spacing: 0.05em; color: #9A8391; margin-bottom: 26px; white-space: nowrap">{{ t.heroMeta }}</div>
+        <p style="font-size: 16.5px; line-height: 1.62; color: rgba(26,20,32,0.66); max-width: 56ch; margin: 0 0 32px; text-wrap: pretty; white-space: pre-line">{{ t.intro }}</p>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap">
+          <a href="https://ambernguyen.lovable.app/__l5e/assets-v1/8afe4c25-a2db-4e48-85ec-751d53c0cadb/Amber-Nguyen-CV.pdf" style="display: inline-flex; align-items: center; gap: 9px; padding: 15px 26px; border-radius: 999px; background: linear-gradient(135deg,#FF6FA5,#A56BFF); color: #fff; font-size: 14.5px; font-weight: 600; box-shadow: 0 12px 26px rgba(224,81,140,0.28)" style-hover="color: #fff; transform: translateY(-2px)">{{ t.cvBtn }} ↓</a>
+          <a href="https://www.linkedin.com/in/anhnguyenthimai/" target="_blank" style="display: inline-flex; align-items: center; gap: 9px; padding: 15px 26px; border-radius: 999px; background: #fff; border: 1px solid rgba(26,20,32,0.12); font-size: 14.5px; font-weight: 600" style-hover="border-color: #E0518C; color: #E0518C">{{ t.liBtn }} ↗</a>
+        </div>
+      </div>
+      <div style="position: relative; justify-self: end; width: 380px; height: 470px">
+        <div style="position: absolute; inset: -34px -26px -20px; border-radius: 50%; background: radial-gradient(60% 55% at 50% 42%, rgba(255,176,210,0.55), rgba(217,196,255,0.25) 55%, rgba(255,255,255,0) 78%); filter: blur(18px); pointer-events: none"></div>
+        <div style="position: absolute; inset: 0; border-radius: 34px; overflow: hidden; background: transparent; -webkit-mask-image: radial-gradient(78% 74% at 50% 44%, #000 62%, rgba(0,0,0,0) 100%); mask-image: radial-gradient(78% 74% at 50% 44%, #000 62%, rgba(0,0,0,0) 100%)">
+          <image-slot id="hero-portrait" shape="rect" placeholder="Drop your portrait" style="width: 100%; height: 100%"></image-slot>
+        </div>
+        <div style="position: absolute; left: -66px; bottom: -30px; width: 288px; padding: 18px 20px; border-radius: 22px; background: rgba(255,255,255,0.82); backdrop-filter: blur(16px); border: 1px solid rgba(26,20,32,0.07); box-shadow: 0 22px 50px rgba(160,90,130,0.18)">
+          <div style="display: flex; align-items: center; justify-content: space-between; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 10.5px; letter-spacing: 0.1em; color: #9A8391; margin-bottom: 12px">
+            <span style="display: flex; align-items: center; gap: 7px"><span style="width: 6px; height: 6px; border-radius: 50%; background: #35C08A; box-shadow: 0 0 0 4px rgba(53,192,138,0.16)"></span>{{ t.liveLabel }}</span>
+          </div>
+          <div style="position: relative; height: 82px">
+            <svg viewBox="0 0 260 64" preserveAspectRatio="none" style="display: block; width: 100%; height: 64px; overflow: visible">
+              <defs>
+                <linearGradient id="sparkG" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#FF6FA5"></stop>
+                  <stop offset="50%" stop-color="#C86BD6"></stop>
+                  <stop offset="100%" stop-color="#A56BFF"></stop>
+                </linearGradient>
+                <linearGradient id="sparkFlow" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#FF6FA5" stop-opacity="0"></stop>
+                  <stop offset="45%" stop-color="#FFFFFF" stop-opacity="0.85"></stop>
+                  <stop offset="100%" stop-color="#A56BFF" stop-opacity="0"></stop>
+                  <animate attributeName="x1" values="-0.6;1" dur="2.6s" repeatCount="indefinite"></animate>
+                  <animate attributeName="x2" values="0;1.6" dur="2.6s" repeatCount="indefinite"></animate>
+                </linearGradient>
+                <linearGradient id="sparkFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#FF6FA5" stop-opacity="0.22"></stop>
+                  <stop offset="100%" stop-color="#A56BFF" stop-opacity="0"></stop>
+                </linearGradient>
+              </defs>
+              <path d="M0,52 C 18,51 32,47 52,46 C 72,45 86,41 104,38 C 122,35 140,33 160,29 C 178,26 196,21 218,17 C 236,14 248,10 260,7 L260,64 L0,64 Z" fill="url(#sparkFill)" style="animation: rise .8s 1.4s both"></path>
+              <path d="M0,52 C 18,51 32,47 52,46 C 72,45 86,41 104,38 C 122,35 140,33 160,29 C 178,26 196,21 218,17 C 236,14 248,10 260,7" fill="none" stroke="url(#sparkG)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="300" stroke-dashoffset="300" style="animation: drawLoop 4.4s .3s cubic-bezier(.45,0,.25,1) infinite"></path>
+              <path d="M0,52 C 18,51 32,47 52,46 C 72,45 86,41 104,38 C 122,35 140,33 160,29 C 178,26 196,21 218,17 C 236,14 248,10 260,7" fill="none" stroke="url(#sparkFlow)" stroke-width="2.5" stroke-linecap="round" style="animation: rise .6s 2.4s both"></path>
+            </svg>
+            <sc-for list="{{ milestones }}" as="ms" hint-placeholder-count="4">
+              <button type="button" onMouseEnter="{{ ms.on }}" onMouseLeave="{{ ms.off }}" onClick="{{ ms.on }}" title="{{ ms.label }}" style="{{ ms.style }}"></button>
+              <span style="{{ ms.yearStyle }}">{{ ms.year }}</span>
+            </sc-for>
+            <div style="{{ tipStyle }}">{{ tipText }}</div>
+          </div>
+          <div style="display: flex; justify-content: space-between; gap: 10px; margin-top: 14px">
+            <sc-for list="{{ panelStats }}" as="ps" hint-placeholder-count="3">
+              <div>
+                <div style="font-size: 15px; font-weight: 800; letter-spacing: -0.02em">{{ ps.v }}</div>
+                <div style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 9.5px; letter-spacing: 0.06em; color: #9A8391; margin-top: 3px">{{ ps.k }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; padding: 26px 0 64px">
+      <sc-for list="{{ stats }}" as="s" hint-placeholder-count="3">
+        <div style="position: relative; overflow: hidden; padding: 26px 28px; border-radius: 26px; background: #fff; border: 1px solid rgba(26,20,32,0.07); box-shadow: 0 10px 30px rgba(196,120,160,0.1)" style-hover="transform: translateY(-3px); border-color: #F0C3D8">
+          <div style="position: absolute; top: 18px; right: 22px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; color: rgba(26,20,32,0.22)">{{ s.idx }}</div>
+          <div style="font-size: 46px; font-weight: 800; letter-spacing: -0.035em; line-height: 1; background: linear-gradient(135deg,#FF6FA5,#A56BFF); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent">{{ s.shown }}</div>
+          <div style="font-size: 14px; font-weight: 500; color: rgba(26,20,32,0.6); margin-top: 8px">{{ s.label }}</div>
+          <div style="font-size: 12.5px; line-height: 1.5; color: rgba(26,20,32,0.42); margin-top: 6px">{{ s.detail }}</div>
+          <div style="margin-top: 16px; height: 3px; border-radius: 99px; background: #F7EAF1; overflow: hidden"><div style="{{ s.barStyle }}"></div></div>
+        </div>
+      </sc-for>
+    </section>
+
+    <section id="about" style="display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: stretch; padding-bottom: 30px">
+      <div style="padding: 24px 26px; border-radius: 26px; background: #FFF6FA; border: 1px solid rgba(26,20,32,0.06)">
+        <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #B3899C; margin-bottom: 18px">{{ t.skills }}</div>
+        <div style="font-size: 13.5px; line-height: 1.75; color: rgba(26,20,32,0.72)">{{ skillsLine }}</div>
+        <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #B3899C; margin: 18px 0 8px">{{ t.languages }}</div>
+        <div style="font-size: 13.5px; line-height: 1.6; color: rgba(26,20,32,0.72)">{{ t.langList }}</div>
+      </div>
+      <div style="padding: 24px 26px; border-radius: 26px; background: #fff; border: 1px solid rgba(26,20,32,0.07); box-shadow: 0 10px 30px rgba(196,120,160,0.08)">
+        <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #B3899C; margin-bottom: 16px">{{ t.stack }}</div>
+        <div style="display: flex; align-items: flex-start; padding: 6px 0 2px 13px">
+          <sc-for list="{{ tools }}" as="tool" hint-placeholder-count="8">
+            <div style="display: grid; justify-items: center; gap: 9px; width: 66px; margin-left: -13px; transition: transform .22s cubic-bezier(.22,.9,.24,1)" style-hover="transform: translateY(-5px) scale(1.12); z-index: 5; position: relative">
+              <div style="{{ tool.style }}"></div>
+              <div style="font-size: 9.5px; font-weight: 600; color: rgba(26,20,32,0.55); text-align: center; letter-spacing: -0.02em">{{ tool.name }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <div style="margin: 34px 0 72px"></div>
+
+    <section id="experience" style="padding-bottom: 96px">
+      <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 30px">
+        <div>
+          <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.16em; color: #E0518C; margin-bottom: 10px">(01)</div>
+          <h2 style="font-size: 40px; font-weight: 800; letter-spacing: -0.028em; margin: 0">{{ t.expTitle }}</h2>
+        </div>
+        <div style="display: flex; gap: 10px">
+          <button type="button" onClick="{{ prevExp }}" title="Previous" style="width: 46px; height: 46px; border-radius: 50%; border: 1px solid rgba(26,20,32,0.14); background: #fff; cursor: pointer; font-size: 16px; color: #1a1420" style-hover="border-color: #E0518C; color: #E0518C">←</button>
+          <button type="button" onClick="{{ nextExp }}" title="Next" style="width: 46px; height: 46px; border-radius: 50%; border: none; background: linear-gradient(135deg,#FF6FA5,#A56BFF); color: #fff; cursor: pointer; font-size: 16px; box-shadow: 0 10px 22px rgba(224,81,140,0.26)" style-hover="filter: brightness(1.08)">→</button>
+        </div>
+      </div>
+
+      <div style="position: relative; margin-bottom: 26px; padding-top: 6px">
+        <div style="position: absolute; left: 0; right: 0; top: 15px; height: 2px; background: linear-gradient(90deg,#F3D3E1,#DCCDF6)"></div>
+        <div style="position: relative; display: grid; grid-template-columns: repeat(4, 1fr)">
+          <sc-for list="{{ timeline }}" as="tl" hint-placeholder-count="4">
+            <button type="button" onClick="{{ tl.go }}" style="{{ tl.style }}">
+              <span style="{{ tl.dotStyle }}"></span>
+              <span style="font-size: 12.5px; font-weight: 700">{{ tl.year }}</span>
+              <span style="font-size: 11.5px; font-weight: 600; opacity: 0.85">{{ tl.org }}</span>
+              <span style="font-size: 11px; font-weight: 500; opacity: 0.6; line-height: 1.35">{{ tl.role }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+
+      <div ref="{{ expRef }}" style="display: flex; gap: 22px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px 4px 18px; scrollbar-width: thin">
+        <sc-for list="{{ jobs }}" as="job" hint-placeholder-count="4">
+          <div style="flex: 0 0 500px; scroll-snap-align: start; padding: 32px; border-radius: 30px; background: #fff; border: 1px solid rgba(26,20,32,0.07); box-shadow: 0 14px 36px rgba(196,120,160,0.1)">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 16px">
+              <span style="display: inline-flex; padding: 6px 13px; border-radius: 999px; background: #FFF0F6; color: #E0518C; font-size: 12px; font-weight: 700">{{ job.dates }}</span>
+              <span style="font-size: 12.5px; color: rgba(26,20,32,0.45); white-space: nowrap">{{ job.place }}</span>
+            </div>
+            <h3 style="font-size: 24px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 6px; text-wrap: balance">{{ job.role }}</h3>
+            <div style="font-size: 13.5px; font-weight: 600; color: #8A6E7D; margin-bottom: 20px">{{ job.company }}</div>
+            <ul style="margin: 0; padding: 0; list-style: none; display: grid; gap: 11px">
+              <sc-for list="{{ job.points }}" as="point" hint-placeholder-count="3">
+                <li style="display: flex; gap: 11px; font-size: 14.5px; line-height: 1.55; color: rgba(26,20,32,0.76)"><span style="flex: 0 0 6px; width: 6px; height: 6px; margin-top: 8px; border-radius: 50%; background: linear-gradient(135deg,#FF6FA5,#A56BFF)"></span>{{ point }}</li>
+              </sc-for>
+            </ul>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section id="education" style="padding-bottom: 96px">
+      <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.16em; color: #E0518C; margin-bottom: 10px">(02)</div>
+      <h2 style="font-size: 40px; font-weight: 800; letter-spacing: -0.028em; margin: 0 0 32px">{{ t.eduTitle }}</h2>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px">
+        <sc-for list="{{ education }}" as="ed" hint-placeholder-count="3">
+          <div style="border-radius: 30px; overflow: hidden; background: #fff; border: 1px solid rgba(26,20,32,0.07); box-shadow: 0 14px 36px rgba(196,120,160,0.1)" style-hover="transform: translateY(-4px)">
+            <div style="height: 168px; background: #FBEFF5">
+              <image-slot id="{{ ed.slot }}" shape="rect" placeholder="{{ ed.slotHint }}" style="width: 100%; height: 100%"></image-slot>
+            </div>
+            <div style="padding: 26px; display: flex; flex-direction: column; gap: 12px">
+              <div style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.05em; color: #C79AB0">{{ ed.dates }}</div>
+              <h3 style="font-size: 20px; font-weight: 800; letter-spacing: -0.015em; margin: 0; text-wrap: balance">{{ ed.school }}</h3>
+              <div style="font-size: 14px; font-weight: 600; color: #E0518C">{{ ed.degree }}</div>
+              <p style="font-size: 13.5px; line-height: 1.6; color: rgba(26,20,32,0.68); margin: 0; text-wrap: pretty">{{ ed.note }}</p>
+              <div style="padding-top: 4px; border-top: 1px solid rgba(26,20,32,0.07)">
+                <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #B3899C; margin: 10px 0 7px">{{ t.focus }}</div>
+                <div style="font-size: 13px; line-height: 1.6; color: rgba(26,20,32,0.62)">{{ ed.focusList }}</div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section id="awards" style="padding-bottom: 96px">
+      <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.16em; color: #E0518C; margin-bottom: 10px">(03)</div>
+      <h2 style="font-size: 40px; font-weight: 800; letter-spacing: -0.028em; margin: 0 0 32px">{{ t.awardsTitle }}</h2>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px">
+        <sc-for list="{{ awards }}" as="aw" hint-placeholder-count="4">
+          <div style="display: flex; gap: 18px; align-items: flex-start; padding: 22px 24px; border-radius: 26px; background: #FFF6FA; border: 1px solid rgba(26,20,32,0.06)" style-hover="background: #fff; border-color: #F0C3D8">
+            <div style="flex: 0 0 90px; width: 90px; height: 90px; border-radius: 20px; overflow: hidden; background: #fff; border: 1px solid rgba(26,20,32,0.07)">
+              <image-slot id="{{ aw.slot }}" shape="rect" placeholder="" style="width: 100%; height: 100%"></image-slot>
+            </div>
+            <div>
+              <h3 style="font-size: 16.5px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 4px; text-wrap: balance">{{ aw.title }}</h3>
+              <div style="font-size: 13px; font-weight: 600; color: #E0518C; margin-bottom: 7px">{{ aw.org }}</div>
+              <p style="font-size: 13.5px; line-height: 1.55; color: rgba(26,20,32,0.66); margin: 0; text-wrap: pretty">{{ aw.note }}</p>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section id="projects" style="padding-bottom: 96px">
+      <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.16em; color: #E0518C; margin-bottom: 10px">(04)</div>
+      <h2 style="font-size: 40px; font-weight: 800; letter-spacing: -0.028em; margin: 0 0 32px">{{ t.projTitle }}</h2>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: stretch">
+        <sc-for list="{{ projects }}" as="p" hint-placeholder-count="3">
+          <div style="display: flex; flex-direction: column; padding: 20px; border-radius: 32px; background: #fff; border: 1px solid rgba(26,20,32,0.07); box-shadow: 0 16px 40px rgba(196,120,160,0.1); transition: transform .25s ease" style-hover="transform: translateY(-5px); border-color: #F0C3D8">
+            <div style="height: 210px; border-radius: 22px; overflow: hidden; background: #FBEFF5; margin-bottom: 20px">
+              <image-slot id="{{ p.slot }}" shape="rect" placeholder="{{ p.slotHint }}" style="width: 100%; height: 100%"></image-slot>
+            </div>
+            <div style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.1em; color: #C79AB0; margin-bottom: 10px">{{ p.num }}</div>
+            <h3 style="font-size: 23px; font-weight: 800; letter-spacing: -0.025em; margin: 0 0 5px; text-wrap: balance">{{ p.title }}</h3>
+            <div style="font-size: 13px; font-weight: 600; color: #8A6E7D; margin-bottom: 12px">{{ p.org }}</div>
+            <p style="font-size: 14.5px; line-height: 1.55; color: rgba(26,20,32,0.72); margin: 0 0 14px; text-wrap: pretty">{{ p.blurb }}</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 18px">
+              <sc-for list="{{ p.metrics }}" as="m" hint-placeholder-count="2">
+                <span style="padding: 6px 12px; border-radius: 999px; background: #FFF0F6; color: #E0518C; font-size: 12px; font-weight: 700">{{ m }}</span>
+              </sc-for>
+            </div>
+            <div style="margin-top: auto; display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+              <a href="{{ p.page }}" style="display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px; border-radius: 999px; background: linear-gradient(135deg,#FF6FA5,#A56BFF); color: #fff; font-size: 13px; font-weight: 600" style-hover="color: #fff; filter: brightness(1.06)">{{ t.readMore }} →</a>
+              <sc-for list="{{ p.links }}" as="lk" hint-placeholder-count="2">
+                <a href="{{ lk.href }}" target="_blank" title="{{ lk.label }}" style="display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(26,20,32,0.12); background: #fff; overflow: hidden" style-hover="border-color: #E0518C; transform: translateY(-2px)">
+                  <span style="{{ lk.iconStyle }}"></span>
+                </a>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section id="research" style="padding-bottom: 96px">
+      <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.16em; color: #E0518C; margin-bottom: 10px">(05)</div>
+      <h2 style="font-size: 40px; font-weight: 800; letter-spacing: -0.028em; margin: 0 0 32px">{{ t.researchTitle }}</h2>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 22px">
+        <sc-for list="{{ research }}" as="r" hint-placeholder-count="2">
+          <div style="display: flex; flex-direction: column; height: 100%; padding: 32px; border-radius: 30px; background: linear-gradient(160deg,#FFF6FA,#FFFFFF); border: 1px solid rgba(26,20,32,0.07)">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 16px">
+              <div style="display: grid; gap: 4px">
+                <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #B3899C">{{ r.kind }}</span>
+                <span style="font-size: 12.5px; color: rgba(26,20,32,0.5)">{{ r.meta }}</span>
+              </div>
+              <span style="flex: 0 0 auto; padding: 7px 14px; border-radius: 999px; background: linear-gradient(135deg,#FF6FA5,#A56BFF); color: #fff; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap">{{ r.badge }}</span>
+            </div>
+            <h3 style="min-height: 2.6em; font-size: 21px; font-weight: 800; letter-spacing: -0.015em; line-height: 1.3; margin: 0 0 14px; text-wrap: pretty">{{ r.title }}</h3>
+            <p style="font-size: 14.5px; line-height: 1.6; color: rgba(26,20,32,0.7); margin: 0 0 18px; text-wrap: pretty">{{ r.summary }}</p>
+            <ul style="margin: 0 0 24px; padding: 0; list-style: none; display: grid; gap: 9px">
+              <sc-for list="{{ r.highlights }}" as="h" hint-placeholder-count="2">
+                <li style="display: flex; gap: 10px; font-size: 13.5px; line-height: 1.5; color: rgba(26,20,32,0.72)"><span style="color: #E0518C; font-weight: 700">→</span>{{ h }}</li>
+              </sc-for>
+            </ul>
+            <a href="{{ r.href }}" target="_blank" style="margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 999px; background: #fff; border: 1px solid rgba(26,20,32,0.12); font-size: 13px; font-weight: 600" style-hover="border-color: #E0518C; color: #E0518C">{{ t.readPaper }} ↗</a>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="position: relative; margin-bottom: 96px; border-radius: 38px; overflow: hidden; min-height: 420px; display: grid; grid-template-columns: minmax(0, 1fr); align-items: center">
+      <div style="position: absolute; inset: 0; background: #FBEFF5">
+        <image-slot id="testimonial-bg" shape="rect" placeholder="" style="width: 100%; height: 100%"></image-slot>
+      </div>
+      <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.72) 0%, rgba(255,240,247,0.78) 100%); pointer-events: none"></div>
+      <div style="position: relative; justify-self: center; min-width: 0; max-width: min(1000px, 100%); margin: 52px 32px; padding: 48px 60px; border-radius: 32px; background: rgba(255,255,255,0.86); backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,0.9); box-shadow: 0 26px 64px rgba(160,90,130,0.16); text-align: center">
+        <div style="font-size: 60px; line-height: 0.5; color: #E0518C; margin-bottom: 22px">“</div>
+        <p style="font-size: 17px; line-height: 1.7; color: rgba(26,20,32,0.82); margin: 0 0 28px; text-wrap: pretty">{{ quoteEl }}</p>
+        <div style="display: grid; justify-items: center; gap: 4px">
+          <div style="font-size: 15.5px; font-weight: 700">Phuong Bui Hong</div>
+          <div style="font-size: 13px; color: #8A6E7D">{{ t.quoteRole }}</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" style="padding-bottom: 40px">
+      <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.16em; color: #E0518C; margin-bottom: 10px">(06)</div>
+      <h2 style="font-size: 40px; font-weight: 800; letter-spacing: -0.028em; margin: 0 0 30px">{{ t.contactTitle }}</h2>
+      <div style="padding: 52px; border-radius: 38px; background: linear-gradient(135deg,#FFF0F7,#F4EEFF); border: 1px solid rgba(26,20,32,0.06)">
+        <h3 style="font-size: clamp(36px, 4.6vw, 62px); font-weight: 800; letter-spacing: -0.035em; line-height: 1.05; margin: 0 0 34px; max-width: 20ch; text-wrap: balance">{{ t.contactHeading }}</h3>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 44px">
+          <a href="mailto:anhntm.business@gmail.com" style="display: inline-flex; align-items: center; gap: 9px; padding: 16px 28px; border-radius: 999px; background: #1a1420; color: #fff; font-size: 15px; font-weight: 600" style-hover="background: #E0518C; color: #fff">anhntm.business@gmail.com →</a>
+          <a href="https://ambernguyen.lovable.app/__l5e/assets-v1/8afe4c25-a2db-4e48-85ec-751d53c0cadb/Amber-Nguyen-CV.pdf" style="display: inline-flex; align-items: center; gap: 9px; padding: 16px 28px; border-radius: 999px; background: #fff; border: 1px solid rgba(26,20,32,0.12); font-size: 15px; font-weight: 600" style-hover="border-color: #E0518C; color: #E0518C">{{ t.cvBtn }} ↓</a>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px">
+          <div style="padding: 22px 24px; border-radius: 24px; background: rgba(255,255,255,0.7)">
+            <div style="font-size: 11.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #B3899C; margin-bottom: 8px">{{ t.phone }}</div>
+            <a href="tel:+46762806313" style="font-size: 15.5px; font-weight: 600">+46 76 280 6313</a>
+          </div>
+          <div style="padding: 22px 24px; border-radius: 24px; background: rgba(255,255,255,0.7)">
+            <div style="font-size: 11.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #B3899C; margin-bottom: 8px">LinkedIn</div>
+            <a href="https://www.linkedin.com/in/anhnguyenthimai/" target="_blank" style="font-size: 15.5px; font-weight: 600">/in/anhnguyenthimai ↗</a>
+          </div>
+          <div style="padding: 22px 24px; border-radius: 24px; background: rgba(255,255,255,0.7)">
+            <div style="font-size: 11.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #B3899C; margin-bottom: 8px">{{ t.location }}</div>
+            <div style="font-size: 15.5px; font-weight: 600">Gothenburg, Sweden</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer style="display: flex; justify-content: space-between; gap: 24px; padding: 30px 0 44px; font-size: 12.5px; color: rgba(26,20,32,0.45)">
+      <span>© 2026 Anh Nguyen (Amber Nguyen)</span>
+      <span>Gothenburg, Sweden</span>
+    </footer>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440}}">
+class Component extends DCLogic {
+  state = { lang: "en", active: 0, word: 0, mx: 62, my: 26, p: 0, sec: "about", pt: null };
+
+  constructor(props) {
+    super(props);
+    this.expRef = React.createRef();
+    this.glowRef = React.createRef();
+    this.dotRef = React.createRef();
+  }
+
+  componentDidMount() {
+    this.startHero();
+    this.startCursor();
+    this.startSpy();
+    const el = this.expRef.current;
+    if (!el) return;
+    this._onScroll = () => {
+      const card = el.firstElementChild;
+      if (!card) return;
+      const step = card.getBoundingClientRect().width + 22;
+      const i = Math.round(el.scrollLeft / step);
+      if (i !== this.state.active) this.setState({ active: i });
+    };
+    el.addEventListener("scroll", this._onScroll, { passive: true });
+  }
+
+  startSpy() {
+    const ids = ["about", "experience", "education", "awards", "projects", "research", "contact"];
+    this._onPageScroll = () => {
+      let cur = ids[0];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= 140) cur = id;
+      }
+      if (cur !== this.state.sec) this.setState({ sec: cur });
+    };
+    window.addEventListener("scroll", this._onPageScroll, { passive: true });
+    this._onPageScroll();
+  }
+
+  startCursor() {
+    const pos = { x: innerWidth * 0.6, y: 300 };
+    const slow = { x: pos.x, y: pos.y };
+    const fast = { x: pos.x, y: pos.y };
+    this._onMove = e => { pos.x = e.clientX; pos.y = e.clientY; this._seen = true; };
+    window.addEventListener("mousemove", this._onMove, { passive: true });
+    const loop = () => {
+      slow.x += (pos.x - slow.x) * 0.055; slow.y += (pos.y - slow.y) * 0.055;
+      fast.x += (pos.x - fast.x) * 0.16; fast.y += (pos.y - fast.y) * 0.16;
+      const g = this.glowRef.current, d = this.dotRef.current;
+      if (g) { g.style.transform = "translate3d(" + slow.x + "px," + slow.y + "px,0)"; g.style.opacity = this._seen ? "1" : "0"; }
+      if (d) { d.style.transform = "translate3d(" + fast.x + "px," + fast.y + "px,0)"; d.style.opacity = this._seen ? "1" : "0"; }
+      this._craf = requestAnimationFrame(loop);
+    };
+    this._craf = requestAnimationFrame(loop);
+  }
+
+  phrases() {
+    return this.state.lang === "sv"
+      ? ["digitala produkter", "logistikplattformar", "budappar", "leveranssystem"]
+      : ["digital products", "logistics platforms", "courier apps", "delivery systems"];
+  }
+
+
+  startHero() {
+    this._wordTimer = setInterval(() => this.setState(s => ({ word: s.word + 1 })), 4200);
+    const t0 = performance.now();
+    const tick = now => {
+      const p = Math.min(1, (now - t0) / 1400);
+      this.setState({ p: 1 - Math.pow(1 - p, 3) });
+      if (p < 1) this._raf = requestAnimationFrame(tick);
+    };
+    this._raf = requestAnimationFrame(tick);
+  }
+
+  componentWillUnmount() {
+    const el = this.expRef.current;
+    if (el && this._onScroll) el.removeEventListener("scroll", this._onScroll);
+    clearInterval(this._wordTimer);
+    clearTimeout(this._tt);
+    cancelAnimationFrame(this._raf);
+    cancelAnimationFrame(this._craf);
+    if (this._onMove) window.removeEventListener("mousemove", this._onMove);
+    if (this._onPageScroll) window.removeEventListener("scroll", this._onPageScroll);
+  }
+
+  scrollTo(i) {
+    const el = this.expRef.current;
+    if (!el) return;
+    const card = el.firstElementChild;
+    const step = card ? card.getBoundingClientRect().width + 22 : 520;
+    const max = el.children.length - 1;
+    const n = Math.max(0, Math.min(max, i));
+    el.scrollTo({ left: n * step, behavior: "smooth" });
+    this.setState({ active: n });
+  }
+
+  renderVals() {
+    const sv = this.state.lang === "sv";
+    const L = (en, s) => (sv ? s : en);
+    const pill = on => "padding: 7px 14px; border-radius: 999px; border: none; cursor: pointer; font: inherit; font-size: 12px; font-weight: 700; " + (on ? "background: #fff; color: #E0518C; box-shadow: 0 2px 8px rgba(196,120,160,0.2)" : "background: transparent; color: #A08C97");
+
+    const jobs = [
+      { dates: "08/2025 - " + L("Present", "Nu"), theme: L("SUPPORT OPS AT SCALE", "SUPPORT-OPS I SKALA"), place: L("Singapore · Remote", "Singapore · Distans"), role: "Product Operation Analyst", company: L("99Tech Pte. Ltd. · Global gaming technology", "99Tech Pte. Ltd. · Global spelteknologi"), points: [
+        L("Led product initiatives optimizing customer support across Thailand, Singapore and the Philippines for 1M+ users.", "Ledde produktinitiativ som optimerade kundsupport i Thailand, Singapore och Filippinerna för över 1 miljon användare."),
+        L("Partnered with engineering on UX/UI improvements for internal systems serving 100 providers.", "Samarbetade med utvecklingsteamet kring UX/UI-förbättringar i interna system för 100 leverantörer.")
+      ]},
+      { dates: "02/2024 - 08/2025", theme: L("EXPRESS DELIVERY PRODUCTS", "EXPRESSLEVERANSPRODUKTER"), place: L("Hanoi, Vietnam", "Hanoi, Vietnam"), role: L("Product Team Lead - Leader Under 25", "Produktteamledare - Leader Under 25"), company: L("Giao Hang Tiet Kiem JSC · 30,000+ employees, 1B+ packages", "Giao Hang Tiet Kiem JSC · 30 000+ anställda, 1 md+ paket"), points: [
+        L("Owned roadmap for 3 express delivery services handling 1M+ packages/day, driving 5% MoM revenue growth.", "Ägde roadmap för tre expressleveranstjänster med över 1 miljon paket/dag och 5 % intäktstillväxt per månad."),
+        L("Maintained a prioritized backlog of 30+ weekly tasks using RICE and impact-effort frameworks.", "Höll en prioriterad backlog med 30+ uppgifter i veckan med RICE och impact-effort."),
+        L("Led a 5-member team delivering 5 flagship projects yearly for 2,000 couriers and 3M+ sellers.", "Ledde ett team på fem som levererade fem flaggskeppsprojekt per år för 2 000 bud och 3 miljoner+ säljare."),
+        L("Defined and tracked product KPIs in SQL and Power BI across 30,000+ couriers.", "Definierade och följde produkt-KPI:er i SQL och Power BI för 30 000+ bud.")
+      ]},
+      { dates: "09/2021 - 02/2024", theme: L("COURIER APPS & DATA", "BUDAPPAR & DATA"), place: "Hanoi, Vietnam", role: "Product Owner / Business Analyst", company: "Giao Hang Tiet Kiem JSC", points: [
+        L("Owned end-to-end development of 2,000 courier applications - SRS/PRD, mock-ups, functional diagrams.", "Ägde utvecklingen av 2 000 budapplikationer från början till slut - SRS/PRD, skisser och funktionsdiagram."),
+        L("Built real-time SQL & Power BI dashboards reducing analysis time by 80%.", "Byggde realtidsdashboards i SQL och Power BI som kortade analystiden med 80 %.")
+      ]},
+      { dates: "01/2021 - 05/2021", theme: L("ENTERPRISE TRACKING PLATFORM", "SPÅRNINGSPLATTFORM"), place: "Hanoi, Vietnam", role: "Business Analyst", company: L("FPT Information System JSC · $2B+ revenue, 30+ countries", "FPT Information System JSC · 2 md+ USD i omsättning, 30+ länder"), points: [
+        L("Defined requirements for a tracking platform used by 300 managers across 53 cities.", "Definierade krav för en spårningsplattform som används av 300 chefer i 53 städer."),
+        L("Built real-time production & sales dashboards supporting C-level decisions.", "Byggde realtidsdashboards för produktion och försäljning som stöd för ledningsbeslut.")
+      ]}
+    ];
+
+    const orgs = ["99Tech", "GHTK", "GHTK", "FPT IS"];
+    const years = ["2025", "2024", "2021", "2021"];
+
+    const msData = [
+      { x: 0, y: 52, year: "2021", label: L("Business Analyst · FPT IS", "Business Analyst · FPT IS") },
+      { x: 22, y: 45, year: "", label: L("2021 · Product Owner · GHTK", "2021 · Produktägare · GHTK") },
+      { x: 63, y: 29, year: "2024", label: L("Product Team Lead · Leader Under 25", "Produktteamledare · Leader Under 25") },
+      { x: 100, y: 7, year: "2025", label: L("Product Ops Analyst · 99Tech", "Product Ops Analyst · 99Tech") }
+    ];
+    const hp = this.state.pt;
+    const ico = slug => "display: block; width: 18px; height: 18px; background: url(https://cdn.simpleicons.org/" + slug + "/1a1420) center/contain no-repeat";
+    const words = sv ? ["digitala produkter", "logistikplattformar", "budappar", "leveranssystem"] : ["digital products", "logistics platforms", "courier apps", "delivery systems"];
+    const word = words[this.state.word % words.length];
+    const p = this.state.p;
+    const chip = (top, side, offset) => "position: absolute; " + top + "; " + side + ": " + offset + "; display: flex; align-items: center; gap: 8px; padding: 10px 15px; border-radius: 14px; background: rgba(255,255,255,0.86); backdrop-filter: blur(10px); border: 1px solid rgba(26,20,32,0.07); box-shadow: 0 12px 28px rgba(160,90,130,0.16); font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11.5px; font-weight: 600; white-space: nowrap; animation: rise .7s ease both";
+
+    return {
+      rotEl: React.createElement("div", { key: word, style: { padding: "0.14em 0", lineHeight: 1.06, animation: "rollIn 1.1s cubic-bezier(.16,1,.3,1) both", willChange: "transform" } }, word),
+      expRef: this.expRef,
+      glowRef: this.glowRef,
+      dotRef: this.dotRef,
+      navItems: [
+        ["experience", L("Experience", "Erfarenhet")], ["education", L("Education", "Utbildning")],
+        ["projects", L("Projects", "Projekt")],
+        ["research", L("Research", "Forskning")], ["contact", L("Contact", "Kontakt")]
+      ].map(([id, label]) => ({
+        href: "#" + id, label,
+        style: "padding: 7px 13px; border-radius: 999px; transition: all .2s ease; " + (this.state.sec === id ? "background: #FFF0F6; color: #E0518C; font-weight: 700" : "color: rgba(26,20,32,0.6)")
+      })),
+      quoteEl: (() => {
+        const parts = sv
+          ? ["Jag har haft förmånen att följa Ambers fyraåriga resa från engagerad medarbetare till en av företagets yngsta ", "teamledare", ". Jag uppskattar hennes professionalism och ", "ledarskap", " – särskilt i projekt som kräver innovation, hög prestation och snäva deadlines. Hon koordinerade flera avdelningar så att produkter levererades i tid och med hög kvalitet, och beskrivs genomgående av kollegor som passionerad och hängiven."]
+          : ["Having had the privilege of witnessing Amber's 4-year journey from a dedicated employee to one of the company's ", "youngest Team Leaders", ", I value her professionalism and ", "leadership in projects that demand innovation, high performance and tight deadlines", ". She coordinated effectively across multiple departments to ensure products were delivered on time and to a high standard, and Amber is consistently recognized by colleagues as passionate, dedicated, and someone who brings positive energy to the team."];
+        const hi = { background: "linear-gradient(180deg, transparent 62%, #FFD9E8 62%)", fontWeight: 700, color: "#1a1420", padding: "0 2px" };
+        return parts.map((s, i) => React.createElement("span", { key: i, style: i % 2 ? hi : null }, s));
+      })(),
+      domains: words.map((w, i) => ({
+        label: w,
+        style: "padding: 7px 14px; border-radius: 999px; font-size: 13px; font-weight: 600; white-space: nowrap; transition: all .5s cubic-bezier(.22,.9,.24,1); " + (i === this.state.word % words.length
+          ? "background: linear-gradient(135deg,#FF6FA5,#A56BFF); color: #fff; box-shadow: 0 8px 18px rgba(224,81,140,0.26)"
+          : "background: #FFF0F6; color: #B3899C")
+      })),
+      milestones: msData.map((m, i) => ({
+        label: m.year + " · " + m.label,
+        year: m.year,
+        yearStyle: "position: absolute; left: " + m.x + "%; top: 66px; transform: translateX(" + (i === 0 ? "0" : i === msData.length - 1 ? "-100%" : "-50%") + "); font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 9.5px; font-weight: " + (hp === i ? "700" : "500") + "; letter-spacing: 0.06em; color: " + (hp === i ? "#A56BFF" : "#B3899C") + "; transition: color .2s ease; pointer-events: none",
+        on: () => this.setState({ pt: i }),
+        off: () => this.setState({ pt: null }),
+        style: "position: absolute; left: " + m.x + "%; top: " + m.y + "px; width: 13px; height: 13px; margin: -6.5px 0 0 -6.5px; padding: 0; border-radius: 50%; cursor: pointer; background: #fff; border: 2.5px solid " + (hp === i ? "#A56BFF" : "#F0A9C8") + "; box-shadow: " + (hp === i ? "0 0 0 5px rgba(165,107,255,0.16)" : "none") + "; transform: scale(" + (hp === i ? 1.25 : 1) + "); transition: all .2s ease; z-index: 2"
+      })),
+      tipText: hp === null ? "" : msData[hp].label,
+      tipStyle: "position: absolute; left: " + (hp === null ? 50 : Math.min(78, Math.max(22, msData[hp].x))) + "%; top: " + (hp === null ? 0 : msData[hp].y - 44) + "px; transform: translateX(-50%); padding: 7px 12px; border-radius: 10px; background: #1a1420; color: #fff; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 10px; letter-spacing: 0.02em; white-space: nowrap; pointer-events: none; z-index: 3; opacity: " + (hp === null ? 0 : 1) + "; transition: opacity .18s ease, left .22s ease, top .22s ease",
+      panelStats: [
+        { v: "3M+", k: sv ? "ANVÄNDARE" : "USERS SERVED" },
+        { v: "1B+", k: sv ? "PAKET" : "PACKAGES" },
+        { v: "30K+", k: sv ? "BUD" : "COURIERS" }
+      ],
+      onHeroMove: e => {
+        const el = e.currentTarget;
+        const r = el.getBoundingClientRect();
+        this.setState({ mx: ((e.clientX - r.left) / r.width) * 100, my: el.offsetTop + (e.clientY - r.top) });
+      },
+      glowStyle: "position: absolute; left: " + this.state.mx + "%; top: " + this.state.my + "%; width: 460px; height: 460px; margin: -230px 0 0 -230px; border-radius: 50%; background: radial-gradient(circle, rgba(255,111,165,0.42), rgba(165,107,255,0.18) 45%, rgba(255,255,255,0) 70%); filter: blur(48px); transition: left .5s cubic-bezier(.22,.9,.24,1), top .5s cubic-bezier(.22,.9,.24,1); will-change: left, top",
+      heroTags: ["PRODUCT OWNER", "BUSINESS ANALYST", "PMP®", sv ? "GÖTEBORG, SVERIGE" : "GOTHENBURG, SWEDEN"],
+      heroChips: [
+        { label: "3M+ users", style: chip("top: 34px", "left", "-58px") },
+        { label: "1B+ packages", style: chip("top: 216px", "left", "-84px") },
+        { label: "SI Scholar '25", style: chip("bottom: 44px", "right", "-46px") }
+      ],
+      setEn: () => this.setState({ lang: "en" }),
+      setSv: () => this.setState({ lang: "sv" }),
+      enBtnStyle: pill(!sv),
+      svBtnStyle: pill(sv),
+      nextExp: () => this.scrollTo(this.state.active + 1),
+      prevExp: () => this.scrollTo(this.state.active - 1),
+      jobs,
+      timeline: jobs.map((j, i) => ({
+        year: years[i], org: orgs[i], role: j.role, go: () => this.scrollTo(i),
+        style: "display: grid; justify-items: start; gap: 6px; padding: 0 0 0 0; background: none; border: none; cursor: pointer; font: inherit; text-align: left; color: " + (i === this.state.active ? "#E0518C" : "rgba(26,20,32,0.45)"),
+        dotStyle: "display: block; width: 14px; height: 14px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 1px rgba(26,20,32,0.08); background: " + (i === this.state.active ? "linear-gradient(135deg,#FF6FA5,#A56BFF)" : "#E8D6E1")
+      })),
+      t: {
+        navAbout: L("About", "Om mig"), navExp: L("Experience", "Erfarenhet"), navEdu: L("Education", "Utbildning"),
+        navAwards: L("Awards", "Utmärkelser"), navProjects: L("Projects", "Projekt"), navResearch: L("Research", "Forskning"),
+        navContact: L("Contact", "Kontakt"),
+        openTo: L("Open to product roles in Sweden", "Öppen för produktroller i Sverige"),
+        focus: L("Focus", "Fokus"),
+        basedInline: L("Based in Gothenburg, Sweden", "Baserad i Göteborg, Sverige"),
+        readMore: L("Read more", "Läs mer"),
+        greeting: L("Hi, I'm Amber Nguyen", "Hej, jag är Amber Nguyen"),
+        buildLead: L("I build", "Jag bygger"),
+        buildStatic: L("digital products", "digitala produkter"),
+        buildTail: L("millions actually use.", "som miljoner faktiskt använder."),
+        liveLabel: L("IMPACT AT SCALE", "EFFEKT I SKALA"),
+        heroMeta: L("PRODUCT OWNER · BUSINESS ANALYST · PRODUCT TEAM LEAD · PMP® · GOTHENBURG, SWEDEN", "PRODUKTÄGARE · BUSINESS ANALYST · PRODUKTTEAMLEDARE · PMP® · GÖTEBORG, SVERIGE"),
+        basedIn: L("BASED IN GOTHENBURG, SWEDEN", "BASERAD I GÖTEBORG, SVERIGE"),
+        intro: L("4+ years in e-logistics and digital platforms across Southeast Asia, delivering for 3M+ users - from courier apps moving a billion packages to express services shipping in under two hours. Strong in Agile delivery, requirements analysis and customer-centric design. \nFast-tracked into a Product Team Lead role (Leader Under 25), leading cross-functional initiatives at scale. Currently pursuing a Master's in Digital Leadership in Gothenburg as a Swedish Institute scholar.", "4+ år inom e-logistik och digitala plattformar i Sydostasien, för över 3 miljoner användare - från budappar som flyttar en miljard paket till expresstjänster med leverans under två timmar. Stark inom agil leverans, kravanalys och kundcentrerad design.\n\nSnabbt befordrad till Product Team Lead (Leader Under 25) med ansvar för tvärfunktionella initiativ i stor skala."),
+        intro2: L("Currently pursuing a Master's in Digital Leadership in Gothenburg as a Swedish Institute scholar.", "Studerar just nu en master i Digital Leadership i Göteborg som Swedish Institute-stipendiat."),
+        cvBtn: L("Download CV", "Ladda ner CV"), liBtn: L("My LinkedIn", "Min LinkedIn"),
+        skills: L("Product skills", "Produktkompetens"), stack: L("Stack", "Verktyg"), languages: L("Languages", "Språk"),
+        langList: L("Vietnamese (Native) · English (C1) · Swedish (A2)", "Vietnamesiska (modersmål) · Engelska (C1) · Svenska (A2)"),
+        expTitle: L("Working experience", "Arbetslivserfarenhet"),
+        eduTitle: L("Education & certification", "Utbildning & certifiering"),
+        awardsTitle: L("Awards & scholarships", "Utmärkelser & stipendier"),
+        projTitle: L("Selected projects", "Utvalda projekt"),
+        researchTitle: L("Research experience", "Forskningserfarenhet"),
+        readPaper: L("Read the paper", "Läs uppsatsen"),
+        contactTitle: L("Contact", "Kontakt"),
+        contactHeading: L("Let's build something worth shipping.", "Låt oss bygga något värt att lansera."),
+        phone: L("Phone", "Telefon"), location: L("Location", "Plats"),
+        quoteRole: L("Product & Data Center Director, Giao Hang Tiet Kiem JSC", "Director, Product & Data Center, Giao Hang Tiet Kiem JSC"),
+        backHome: L("Back to portfolio", "Tillbaka till portfolion"),
+        quote: L("Having had the privilege of witnessing Mai Anh's 4-year journey from a dedicated employee to one of the company's youngest Team Leaders, I value her professionalism and leadership skills, especially in projects that demand innovation, high performance and tight deadlines. As a team leader she has demonstrated strong team management capabilities, coordinating effectively across multiple departments to ensure products were delivered on time and to a high standard. Beyond her technical expertise, Mai Anh is consistently recognized by colleagues as passionate, dedicated, and someone who brings positive energy to the team.", "Jag har haft förmånen att följa Mai Anhs fyraåriga resa från engagerad medarbetare till en av företagets yngsta teamledare, och jag uppskattar hennes professionalism och ledarskap – särskilt i projekt som kräver innovation, hög prestation och snäva deadlines. Som teamledare har hon visat stark förmåga att leda team och koordinera flera avdelningar så att produkter levererades i tid och med hög kvalitet. Utöver sin tekniska kompetens beskrivs Mai Anh genomgående av kollegor som passionerad, hängiven och någon som ger teamet positiv energi.")
+      },
+      stats: [
+        { n: 4, suffix: "+", label: L("years of experience", "års erfarenhet"), detail: L("E-logistics, digital platforms, gaming tech", "E-logistik, digitala plattformar, speltech") },
+        { n: 3, suffix: "", label: L("countries", "länder"), detail: "Sweden, Vietnam, Singapore" },
+        { n: 5, suffix: "+", label: L("completed projects", "genomförda projekt"), detail: L("Ideation to go-to-market ownership", "Från idé till lansering") }
+      ].map((s, i) => ({
+        label: s.label, detail: s.detail,
+        idx: "0" + (i + 1),
+        shown: Math.round(s.n * p) + s.suffix,
+        barStyle: "height: 100%; width: " + (p * 100).toFixed(1) + "%; border-radius: 99px; background: linear-gradient(90deg,#FF6FA5,#A56BFF)"
+      })),
+      skillsLine: [
+        L("Product Strategy & Roadmapping", "Produktstrategi & roadmap"),
+        L("Agile Delivery (Scrum)", "Agil leverans (Scrum)"),
+        L("Backlog Prioritization", "Backlog-prioritering"),
+        L("Stakeholder Management", "Intressenthantering"),
+        L("Requirements Definition (PRD/SRS)", "Kravställning (PRD/SRS)"),
+        L("Data Analytics", "Dataanalys"),
+        L("KPI Tracking & Product Metrics", "KPI-uppföljning & produktmått"),
+        L("UX/UI Design Collaboration", "Samarbete kring UX/UI-design")
+      ].join(" · "),
+      skills: [
+        L("Product Strategy & Roadmapping", "Produktstrategi & roadmap"),
+        L("Agile Delivery (Scrum)", "Agil leverans (Scrum)"),
+        L("Backlog Prioritization", "Backlog-prioritering"),
+        L("Stakeholder Management", "Intressenthantering"),
+        L("Requirements Definition (PRD/SRS)", "Kravställning (PRD/SRS)"),
+        L("Data Analytics", "Dataanalys"),
+        L("KPI Tracking & Product Metrics", "KPI-uppföljning & produktmått"),
+        L("UX/UI Design Collaboration", "Samarbete kring UX/UI-design")
+      ],
+      tools: [
+        { name: "SQL", icon: "logos/mysql", fb: "mysql" },
+        { name: "Python", icon: "logos/python", fb: "python" },
+        { name: "Power BI", icon: "logos/microsoft-power-bi", fb: "powerbi" },
+        { name: "Jira", icon: "logos/jira", fb: "jira" },
+        { name: "Confluence", icon: "logos/confluence", fb: "confluence" },
+        { name: "Figma", icon: "logos/figma", fb: "figma" },
+        { name: "Draw.io", icon: "logos/diagrams-net", fb: "diagramsdotnet" },
+        { name: "Notion", icon: "logos/notion-icon", fb: "notion/1a1420" }
+      ].map(t => ({
+        name: t.name,
+        style: "width: 62px; height: 62px; border-radius: 50%; background-color: #fff; background-image: url(https://api.iconify.design/" + t.icon + ".svg), url(https://cdn.simpleicons.org/" + t.fb + "); background-size: 27px 27px, 25px 25px; background-position: center, center; background-repeat: no-repeat, no-repeat; box-shadow: 0 0 0 4px #fff, 0 0 0 5px rgba(224,81,140,0.12), 0 10px 22px rgba(160,90,130,0.18)"
+      })),
+      tickerLoop: ["Product Owner", "Business Analyst", "PMP®", "Agile", "Data-Informed", "E-logistics", "Gothenburg"].flatMap(w => [w, w]).filter((_, i) => i % 2 === 0).concat(["Product Owner", "Business Analyst", "PMP®", "Agile", "Data-Informed", "E-logistics", "Gothenburg"]),
+      education: [
+        { slot: "edu-gu", slotHint: "University of Gothenburg photo", dates: "08/2025 - 06/2027 · Gothenburg", school: "University of Gothenburg", degree: L("MSc, Digital Leadership", "Master, Digital Leadership"), note: L("Swedish Institute Scholar - Pioneering Women in STEM (52 of 8,500 selected).", "Swedish Institute-stipendiat - Pioneering Women in STEM (52 av 8 500 utvalda)."), focusList: L("Product Strategy · Agile Delivery (Scrum) · Product Governance · Stakeholder Management · Innovation & Entrepreneurship", "Produktstrategi · Agil Leverans (Scrum) · Produktstyrning · Intressenthantering · Innovation & Entreprenörskap") },
+        { slot: "edu-ftu", slotHint: "Foreign Trade University photo", dates: "09/2018 - 06/2022 · Hanoi", school: "Foreign Trade University", degree: L("BSc, International Economics", "Kandidat, internationell ekonomi"), note: L("GPA 3.65/4.0, High Distinction. Outstanding Graduate Award (Top 5%). Academic Excellence Scholarship four years running (10 of 300).", "GPA 3,65/4,0, High Distinction. Outstanding Graduate Award (topp 5 %). Stipendium för akademisk excellens fyra år i rad (10 av 300)."), focusList: L("International Economics · Data Analysis & Statistics · Financial Analysis · Project Management", "Internationell Ekonomi · Dataanalys & Statistik · Finansiell Analys · Projektledning") },
+        { slot: "edu-pmp", slotHint: "PMI / PMP badge", dates: L("07/2026 · Certification", "07/2026 · Certifiering"), school: "Project Management Professional - PMP®", degree: "Project Management Institute (PMI)", note: L("Globally recognized Project Management certification issued by PMI, for individuals with a minimum of 3 years of experience leading and directing cross-functional project teams.", "Globalt erkänd projektledningscertifiering utfärdad av PMI, för personer med minst 3 års erfarenhet av att leda tvärfunktionella projektteam."), focusList: L("Project Integration · Agile / Hybrid Delivery · Stakeholder Management · Risk Management · Schedule & Cost Management", "Projektintegration · Agil / Hybrid Leverans · Intressenthantering · Riskhantering · Tid- & Kostnadsstyrning") }
+      ],
+      awards: [
+        { slot: "aw-si", title: L("Swedish Institute Scholarship - Pioneering Women in STEM", "Swedish Institute-stipendium - Pioneering Women in STEM"), org: L("Swedish Government", "Svenska staten"), note: L("Full-ride scholarship for future female STEM leaders; highly competitive (52 of 8,500 selected).", "Helfinansierat stipendium för framtida kvinnliga STEM-ledare; mycket konkurrensutsatt (52 av 8 500 utvalda).") },
+        { slot: "aw-ghtk", title: L("Excellent Employee of the Year", "Årets medarbetare"), org: "Giaohangtietkiem.vn", note: L("Top 1% of employees in the Product and Data Center for outstanding performance and contribution.", "Topp 1 % av medarbetarna i Product & Data Center för framstående prestation och bidrag.") },
+        { slot: "aw-ftu1", title: L("Outstanding Graduate Award", "Outstanding Graduate Award"), org: "Foreign Trade University", note: L("Top 5% of graduating students for academic performance and leadership.", "Topp 5 % av årskullen för akademiska resultat och ledarskap.") },
+        { slot: "aw-ftu2", title: L("Academic Excellence Scholarships", "Stipendier för akademisk excellens"), org: "Foreign Trade University", note: L("Merit-based tuition scholarship for top-ranked academic performance (top 10 of 300 students).", "Meritbaserat studiestipendium för högst rankade akademiska resultat (topp 10 av 300 studenter).") }
+      ],
+      projects: [
+        { slot: "proj-xfast", slotHint: "XFAST / GHTK courier photo", page: "xfast.html", num: "01 / 03", title: "XFAST - Express Delivery", org: "Giao Hang Tiet Kiem", blurb: L("Owned end-to-end product development from ideation to go-to-market for 1-2 hour delivery services.", "Ägde produktutvecklingen från idé till lansering för leveranstjänster på 1-2 timmar."), metrics: [L("100k+ packages/day", "100k+ paket/dag"), "4.9 CSAT"], links: [] },
+        { slot: "proj-heady", slotHint: "The Heady Day content still", page: "the-heady-day.html", num: "02 / 03", title: "The Heady Day", org: L("Personal · Social media", "Eget projekt · Sociala medier"), blurb: L("Built a content channel about studying in Sweden, growing it organically across short-form video platforms.", "Byggde en kanal om att studera i Sverige och växte den organiskt på kortvideoplattformar."), metrics: [L("2M+ views on Threads", "2M+ visningar på Threads"), L("1M+ on TikTok", "1M+ på TikTok")], links: [
+          { label: "TikTok", href: "https://www.tiktok.com/@theheadyday", iconStyle: ico("tiktok") },
+          { label: "Threads", href: "https://www.threads.com/@amber_nguyenn", iconStyle: ico("threads") }
+        ]},
+        { slot: "proj-neural", slotHint: "Neural Networkers event photo", page: "neural-networkers.html", num: "03 / 03", title: "Neural Networkers", org: L("Social Media Manager · University of Gothenburg", "Social Media Manager · Göteborgs universitet"), blurb: L("Run social media for the student association for Digital Leadership, Human-Centered AI and Communications - building its voice across Instagram and event campaigns.", "Ansvarar för sociala medier för studentföreningen inom Digital Leadership, Human-Centered AI och Communications - bygger dess röst på Instagram och i eventkampanjer."), metrics: [L("45+ master's students", "45+ masterstudenter"), L("12+ alumni", "12+ alumner")], links: [
+          { label: "Instagram", href: "https://www.instagram.com/neuralnetworkers/", iconStyle: ico("instagram") },
+          { label: "Website", href: "https://www.neuralnetworkers.se/", iconStyle: ico("googlechrome") }
+        ]}
+      ],
+      research: [
+        { kind: L("Project work", "Projektarbete"), meta: L("2026 · University of Gothenburg", "2026 · Göteborgs universitet"), badge: L("Qualitative study", "Kvalitativ studie"), title: L("The impact of generative AI on organizational workflow structures at AstraZeneca", "Generativ AI:s påverkan på organisatoriska arbetsflöden på AstraZeneca"), summary: L("Interview-led study of how AstraZeneca employees restructure day-to-day workflows as generative AI enters their tooling.", "Intervjubaserad studie av hur AstraZenecas medarbetare omformar sina dagliga arbetsflöden när generativ AI kommer in i verktygen."), highlights: [
+          L("Mapped where AI shifted decision-making, review loops and role boundaries.", "Kartlade var AI flyttade beslutsfattande, granskningsloopar och rollgränser."),
+          L("Framed adoption barriers as change-management rather than technology problems.", "Ramade in adoptionshinder som förändringsledning snarare än teknikproblem.")
+        ], href: "https://www.linkedin.com/in/anhnguyenthimai/" },
+        { kind: L("Graduation thesis", "Examensarbete"), meta: L("2022 · Foreign Trade University · Grade 8.9/10", "2022 · Foreign Trade University · Betyg 8,9/10"), badge: L("Quantitative study", "Kvantitativ studie"), title: L("Factors affecting consumer satisfaction with a leading Vietnamese e-wallet (MoMo) during COVID-19 in Hanoi", "Faktorer som påverkar konsumentnöjdhet med en ledande vietnamesisk e-plånbok (MoMo) under covid-19 i Hanoi"), summary: L("Quantitative study of e-wallet adoption during the pandemic, modelling which service attributes drove satisfaction and continued use.", "Kvantitativ studie av e-plånboksanvändning under pandemin som modellerar vilka tjänsteattribut som drev nöjdhet och fortsatt användning."), highlights: [
+          L("Survey-based research with hypothesis testing on perceived usefulness, trust and service quality.", "Enkätbaserad studie med hypotesprövning av upplevd nytta, tillit och tjänstekvalitet."),
+          L("Translated findings into product recommendations for onboarding and transaction reliability.", "Omsatte resultaten till produktrekommendationer för onboarding och transaktionstillförlitlighet.")
+        ], href: "https://www.linkedin.com/in/anhnguyenthimai/" }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

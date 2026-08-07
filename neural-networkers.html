@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<script src="./image-slot.js"></script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #fff; color: #1a1420; font-family: "Plus Jakarta Sans", Helvetica, sans-serif; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: #1a1420; text-decoration: none; }
+  a:hover { color: #E0518C; }
+  ::selection { background: #FFD3E4; }
+</style>
+</helmet>
+<div style="max-width: 1080px; margin: 0 auto; padding: 0 32px 90px">
+
+  <header style="display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 26px 0">
+    <a href="index.html#projects" style="display: inline-flex; align-items: center; gap: 9px; padding: 11px 20px; border-radius: 999px; border: 1px solid rgba(26,20,32,0.12); font-size: 13.5px; font-weight: 600" style-hover="border-color: #E0518C; color: #E0518C">← Back to portfolio</a>
+    <a href="index.html#projects" style="font-weight: 700; font-size: 16px">Amber<span style="color: #E0518C">.</span></a>
+  </header>
+
+  <div style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11.5px; letter-spacing: 0.14em; color: #C79AB0; margin: 40px 0 14px">03 / 03 · UNIVERSITY OF GOTHENBURG · 2025-2026</div>
+  <h1 style="font-size: clamp(40px, 6vw, 68px); font-weight: 800; letter-spacing: -0.04em; line-height: 1.04; margin: 0 0 20px; max-width: 17ch; text-wrap: balance">Neural <span style="background: linear-gradient(135deg,#FF6FA5,#A56BFF); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent">Networkers</span></h1>
+  <p style="font-size: 18px; line-height: 1.6; color: rgba(26,20,32,0.68); max-width: 64ch; margin: 0 0 34px; text-wrap: pretty">Social Media Manager for the student association of the Digital Leadership, Human-Centered AI and Communications master's programmes at the Department of Applied IT, University of Gothenburg.</p>
+
+
+
+  <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 56px">
+    <sc-for list="{{ facts }}" as="f" hint-placeholder-count="4">
+      <div style="padding: 22px 24px; border-radius: 24px; background: #FFF6FA; border: 1px solid rgba(26,20,32,0.06)">
+        <div style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 10.5px; letter-spacing: 0.1em; color: #B3899C; margin-bottom: 10px">{{ f.k }}</div>
+        <div style="font-size: 15px; font-weight: 600; line-height: 1.4">{{ f.v }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 56px">
+    <div>
+      <h2 style="font-size: 26px; font-weight: 800; letter-spacing: -0.025em; margin: 0 0 14px">The association</h2>
+      <p style="font-size: 16px; line-height: 1.65; color: rgba(26,20,32,0.7); margin: 0; text-wrap: pretty">Neural Networkers brings together master's students working at the meeting point of management and technology - strategists, ethicists and technologists across three programmes - through events, industry contact and a shared alumni network.</p>
+    </div>
+    <div>
+      <h2 style="font-size: 26px; font-weight: 800; letter-spacing: -0.025em; margin: 0 0 14px">My role</h2>
+      <p style="font-size: 16px; line-height: 1.65; color: rgba(26,20,32,0.7); margin: 0; text-wrap: pretty">I own social media: the content calendar, the visual language, event promotion, and the recap material that keeps the association visible between events. In practice it is a small product with a clear audience and a measurable funnel - attendance.</p>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 40px">
+    <sc-for list="{{ results }}" as="r" hint-placeholder-count="3">
+      <div style="padding: 28px; border-radius: 28px; background: linear-gradient(160deg,#FFF0F7,#F4EEFF); border: 1px solid rgba(26,20,32,0.06)">
+        <div style="font-size: 40px; font-weight: 800; letter-spacing: -0.035em; line-height: 1; background: linear-gradient(135deg,#FF6FA5,#A56BFF); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent">{{ r.v }}</div>
+        <div style="font-size: 14px; color: rgba(26,20,32,0.65); margin-top: 10px; line-height: 1.5">{{ r.k }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <h2 style="font-size: 26px; font-weight: 800; letter-spacing: -0.025em; margin: 0 0 20px">What I do</h2>
+  <div style="display: grid; gap: 14px; margin-bottom: 56px">
+    <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+      <div style="display: grid; grid-template-columns: 52px 1fr; gap: 22px; align-items: start; padding: 24px 26px; border-radius: 26px; background: #fff; border: 1px solid rgba(26,20,32,0.07); box-shadow: 0 12px 30px rgba(196,120,160,0.08)">
+        <div style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; font-weight: 700; color: #E0518C">{{ s.n }}</div>
+        <div>
+          <h3 style="font-size: 17.5px; font-weight: 700; margin: 0 0 6px">{{ s.title }}</h3>
+          <p style="font-size: 15px; line-height: 1.6; color: rgba(26,20,32,0.7); margin: 0; text-wrap: pretty">{{ s.body }}</p>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 56px">
+    <sc-for list="{{ shots }}" as="sh" hint-placeholder-count="3">
+      <div style="aspect-ratio: 4/5; border-radius: 26px; overflow: hidden; background: #FBEFF5; border: 1px solid rgba(26,20,32,0.07)">
+        <image-slot id="{{ sh.slot }}" shape="rect" placeholder="{{ sh.hint }}" style="width: 100%; height: 100%"></image-slot>
+      </div>
+    </sc-for>
+  </div>
+
+
+  <div style="display: flex; gap: 12px; flex-wrap: wrap">
+    <a href="https://www.neuralnetworkers.se/" target="_blank" style="display: inline-flex; align-items: center; gap: 9px; padding: 15px 26px; border-radius: 999px; background: linear-gradient(135deg,#FF6FA5,#A56BFF); color: #fff; font-size: 14.5px; font-weight: 600" style-hover="color: #fff; filter: brightness(1.06)">neuralnetworkers.se ↗</a>
+    <a href="https://www.instagram.com/neuralnetworkers/" target="_blank" style="display: inline-flex; align-items: center; gap: 9px; padding: 15px 26px; border-radius: 999px; border: 1px solid rgba(26,20,32,0.12); font-size: 14.5px; font-weight: 600" style-hover="border-color: #E0518C; color: #E0518C">Instagram ↗</a>
+    <a href="index.html#projects" style="display: inline-flex; align-items: center; gap: 9px; padding: 15px 26px; border-radius: 999px; background: #1a1420; color: #fff; font-size: 14.5px; font-weight: 600" style-hover="background: #E0518C; color: #fff">← Back to portfolio</a>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      facts: [
+        { k: "ROLE", v: "Social Media Manager" },
+        { k: "ORGANISATION", v: "Neural Networkers, Dept. of Applied IT" },
+        { k: "PROGRAMMES", v: "Digital Leadership, Human-Centered AI, Communications" },
+        { k: "CHANNELS", v: "Instagram, event campaigns" }
+      ],
+      steps: [
+        { n: "01", title: "Set a visual language the board can reuse", body: "Templates for event announcements, speaker cards and recaps so any board member can publish something on-brand without waiting on me." },
+        { n: "02", title: "Built campaigns around the event calendar", body: "Each event gets a sequence - announce, speaker reveal, last-call, recap - rather than a single post the day before. Attendance responds to the reminder, not the announcement." },
+        { n: "03", title: "Made the alumni and industry side visible", body: "Content that shows who students actually meet - guests, companies, alumni - does more for signups than describing the association in the abstract." },
+        { n: "04", title: "Read the numbers, adjust the calendar", body: "Reach and saves per format decide what gets repeated next term. Same prioritisation habit as product work, smaller stakes." }
+      ],
+      shots: [
+        { slot: "nn-shot-1", hint: "Event photo" },
+        { slot: "nn-shot-2", hint: "Instagram post" },
+        { slot: "nn-shot-3", hint: "Workshop / networking" }
+      ],
+      results: [
+        { v: "45+", k: "master's students in the network" },
+        { v: "5+", k: "events hosted" },
+        { v: "3", k: "programmes brought together" }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
