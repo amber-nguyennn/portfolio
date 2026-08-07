@@ -35,6 +35,26 @@
   @keyframes wipeIn { from { clip-path: inset(0 100% 0 0) } to { clip-path: inset(0 -0.1em 0 0) } }
   ::-webkit-scrollbar { height: 6px; width: 6px }
   ::-webkit-scrollbar-thumb { background: #F2C4D8; border-radius: 99px }
+
+  @media (max-width: 900px) {
+    html, body { overflow-x: hidden; }
+    div[style*="max-width: 1240px"], div[style*="max-width: 1080px"] { padding-left: 16px !important; padding-right: 16px !important; }
+    div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+    #experience div[style*="repeat(4, 1fr)"] { grid-template-columns: repeat(4, 1fr) !important; }
+    div[style*="justify-self: end"] { justify-self: stretch !important; width: auto !important; max-width: 100% !important; height: 380px !important; }
+    div[style*="left: -66px"] { position: static !important; width: auto !important; margin: 20px 0 0 !important; }
+    div[style*="white-space: nowrap"] { white-space: normal !important; }
+    div[style*="flex: 0 0 500px"] { flex: 0 0 84vw !important; }
+    div[style*="padding: 6px 0 2px 13px"] { flex-wrap: wrap !important; row-gap: 16px !important; }
+    header nav { display: none !important; }
+    header { padding-left: 16px !important; }
+    h1 { font-size: 30px !important; }
+    h2 { font-size: 26px !important; }
+    div[style*="padding: 48px 60px"] { padding: 30px 20px !important; margin: 28px 14px !important; }
+    div[style*="padding: 52px;"] { padding: 26px 20px !important; }
+    div[style*="padding: 32px;"] { padding: 24px 20px !important; }
+    img, svg { max-width: 100%; }
+  }
 </style>
 </helmet>
 <div id="top" style="position: relative">
