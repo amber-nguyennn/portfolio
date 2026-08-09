@@ -148,7 +148,7 @@
   };
   // 2× a ~600px slot in a 1920-wide deck — retina-sharp without making the
   // sidecar enormous. A 1200px WebP at q=0.85 is ~150-300KB.
-  const MAX_DIM = 1200;
+  const MAX_DIM = 2400;
   // Raster formats only. SVG is excluded (can carry script; createImageBitmap
   // on SVG blobs is inconsistent). GIF is excluded because the canvas
   // re-encode keeps only the first frame, so an animated GIF would silently
@@ -266,7 +266,7 @@
       const canvas = document.createElement('canvas');
       canvas.width = w; canvas.height = h;
       canvas.getContext('2d').drawImage(bitmap, 0, 0, w, h);
-      return canvas.toDataURL('image/webp', 0.85);
+      return canvas.toDataURL('image/webp', 0.92);
     } finally {
       bitmap.close && bitmap.close();
     }
@@ -530,6 +530,7 @@
       this._frame = root.querySelector('.frame');
       this._ring = root.querySelector('.ring');
       this._img = root.querySelector('.frame img');
+      if (this._img) { this._img.loading = 'lazy'; this._img.decoding = 'async'; }
       this._empty = root.querySelector('.empty');
       this._cap = root.querySelector('.cap');
       this._sub = root.querySelector('.sub');
