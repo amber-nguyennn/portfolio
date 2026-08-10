@@ -259,7 +259,9 @@
   async function toDataUrl(file, targetW) {
     const bitmap = await createImageBitmap(file);
     try {
-      const cap = Math.min(MAX_DIM, Math.max(1, Math.round(targetW * 2)) || MAX_DIM);
+      // 3× the slot width with a 900px floor: small slots (logos, avatars) were
+      // being stored at ~180px and looked soft on retina.
+      const cap = Math.min(MAX_DIM, Math.max(900, Math.round((targetW || 0) * 3)) || MAX_DIM);
       const scale = Math.min(1, cap / Math.max(bitmap.width, bitmap.height));
       const w = Math.max(1, Math.round(bitmap.width * scale));
       const h = Math.max(1, Math.round(bitmap.height * scale));

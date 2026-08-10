@@ -1,7 +1,16 @@
 {
   "headers": [
     {
-      "source": "/(.*)\\.(js|json|pdf|png|jpg|jpeg|svg|webp|woff2)",
+      "source": "/files/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.(js|json|png|jpg|jpeg|svg|webp|woff2|ico|txt)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -13,6 +22,14 @@
       "source": "/(.*)",
       "headers": [
         {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
           "key": "X-Frame-Options",
           "value": "SAMEORIGIN"
         },
@@ -23,6 +40,10 @@
         {
           "key": "Referrer-Policy",
           "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin"
         }
       ]
     }
