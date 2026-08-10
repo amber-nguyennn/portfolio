@@ -8,7 +8,7 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23ffffff%22%2F%3E%3Ctext%20x%3D%226%22%20y%3D%2244%22%20font-family%3D%22Plus%20Jakarta%20Sans%2C%20Helvetica%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2234%22%20font-weight%3D%22800%22%20letter-spacing%3D%22-1.6%22%20fill%3D%22%231a1420%22%3EA%3C%2Ftext%3E%3Ccircle%20cx%3D%2247%22%20cy%3D%2239%22%20r%3D%226%22%20fill%3D%22%23E0518C%22%2F%3E%3C%2Fsvg%3E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23FF6FA5%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23A56BFF%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2215%22%20fill%3D%22url(%23g)%22%2F%3E%3Ctext%20x%3D%2232%22%20y%3D%2245%22%20text-anchor%3D%22middle%22%20font-family%3D%22Plus%20Jakarta%20Sans%2C%20Helvetica%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2238%22%20font-weight%3D%22800%22%20letter-spacing%3D%22-1.5%22%20fill%3D%22%23ffffff%22%3EA%3C%2Ftext%3E%3C%2Fsvg%3E" />
 <meta name="theme-color" content="#FFF6FA" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#1a1420" media="(prefers-color-scheme: dark)" />
 <title>Amber Nguyen - Product Owner &amp; Business Analyst in Gothenburg</title>
@@ -544,7 +544,24 @@ class Component extends DCLogic {
     const el = this.expRef.current;
     if (!el) return;
     this._onScroll = () => {
-      // Match scrollTo's centring so the timeline highlight agrees with it.
+      if (this._target != null) {
+        // keep the clicked card highlighted and restart the settle timer while
+        // the smooth scroll is still travelling
+        clearTimeout(this._settle);
+        const t = this._target;
+        this._settle = setTimeout(() => { this._target = null; }, 160);
+        if (this.state.active !== t) this.setState({ active: t });
+        return;
+      }
+      // At either end the scroller cannot centre the first/last card, so the
+      // nearest-to-centre card would be its neighbour: clamp explicitly.
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      if (el.scrollLeft <= 2) { if (this.state.active !== 0) this.setState({ active: 0 }); return; }
+      if (el.scrollLeft >= maxScroll - 2) {
+        const last = el.children.length - 1;
+        if (this.state.active !== last) this.setState({ active: last });
+        return;
+      }
       const x = el.scrollLeft + el.clientWidth / 2;
       let best = 0, bestD = Infinity;
       Array.from(el.children).forEach((c, i) => {
@@ -757,6 +774,12 @@ class Component extends DCLogic {
     const raw = target.offsetLeft - el.offsetLeft - Math.max(0, (el.clientWidth - target.clientWidth) / 2);
     const maxScroll = el.scrollWidth - el.clientWidth;
     el.scrollTo({ left: Math.max(0, Math.min(maxScroll, raw)), behavior: "smooth" });
+    // A click is authoritative: smooth-scroll passes over other cards on the way,
+    // and the scroll handler would otherwise re-pick one of those mid-flight.
+    // The lock lifts only once scrolling has actually settled.
+    this._target = n;
+    clearTimeout(this._settle);
+    this._settle = setTimeout(() => { this._target = null; }, 900);
     this.setState({ active: n });
   }
 
