@@ -12,10 +12,10 @@
 <meta name="theme-color" content="#FFF6FA" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#1a1420" media="(prefers-color-scheme: dark)" />
 <title>Amber Nguyen - Product Owner &amp; Business Analyst in Gothenburg</title>
-<meta name="description" content="Portfolio of Anh (Amber) Nguyen, Product Owner and Business Analyst with 4+ years in e-logistics and digital platforms across Southeast Asia, now studying Digital Leadership in Gothenburg as a Swedish Institute scholar." />
+<meta name="description" content="Portfolio of Anh (Amber) Nguyen, UX Designer, Product Owner and Business Analyst working across e-logistics in Southeast Asia and Volvo Group in Sweden, now studying Digital Leadership in Gothenburg as a Swedish Institute scholar." />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Amber Nguyen - Product Owner &amp; Business Analyst" />
-<meta property="og:description" content="4+ years building digital products for 3M+ users across e-logistics and digital platforms. Based in Gothenburg, Sweden." />
+<meta property="og:description" content="Building digital products for 3M+ users across e-logistics in Southeast Asia and global automotive platforms at Volvo Group. Based in Gothenburg, Sweden." />
 <meta name="twitter:card" content="summary" />
 <meta name="apple-mobile-web-app-title" content="Amber Nguyen" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
@@ -320,7 +320,7 @@
 
       <div style="position: relative; margin-bottom: 26px; padding-top: 6px">
         <div style="position: absolute; left: 0; right: 0; top: 15px; height: 2px; background: linear-gradient(90deg,#F3D3E1,#DCCDF6)"></div>
-        <div style="position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr))">
+        <div style="{{ tlGridStyle }}">
           <sc-for list="{{ timeline }}" as="tl" hint-placeholder-count="4">
             <button type="button" onClick="{{ tl.go }}" style="{{ tl.style }}">
               <span style="{{ tl.dotStyle }}" data-m="tldot"></span>
@@ -789,39 +789,35 @@ class Component extends DCLogic {
     const pill = on => "padding: 7px 14px; border-radius: 999px; border: none; cursor: pointer; font: inherit; font-size: 12px; font-weight: 700; " + (on ? "background: #fff; color: #B0326A; box-shadow: 0 2px 8px rgba(196,120,160,0.2)" : "background: transparent; color: #6B5260");
 
     const jobs = [
-      { dates: "08/2025 - " + L("Present", "Nu"), theme: L("SUPPORT OPS AT SCALE", "SUPPORT-OPS I SKALA"), place: L("Singapore · Remote", "Singapore · Distans"), role: "Product Operation Analyst", company: L("99Tech Pte. Ltd. · Global gaming technology", "99Tech Pte. Ltd. · Global spelteknologi"), points: [
-        L("Led product initiatives optimizing customer support across Thailand, Singapore and the Philippines for 1M+ users.", "Ledde produktinitiativ som optimerade kundsupport i Thailand, Singapore och Filippinerna för över 1 miljon användare."),
-        L("Partnered with engineering on UX/UI improvements for internal systems serving 100 providers.", "Samarbetade med utvecklingsteamet kring UX/UI-förbättringar i interna system för 100 leverantörer.")
+      { dates: "09/2026 - " + L("Present", "Nu"), theme: L("GLOBAL UX AT SCALE", "GLOBAL UX I SKALA"), place: L("Gothenburg, Sweden", "Göteborg, Sverige"), role: "UX Design Intern", company: L("Volvo Group · Digital Technology & Operations (DTO)", "Volvo Group · Digital Technology & Operations (DTO)"), points: [
+        L("Support in delivering UX/UI work for Volvo Trucks' public websites (200+ market sites): journey mapping, user research, usability testing and rapid AI prototyping.", "Stöttar i att leverera UX/UI-arbete för Volvo Trucks publika webbplatser (200+ marknadswebbplatser): journey mapping, användarforskning, användbarhetstester och snabb AI-prototyping."),
+        L("Analyze site performance with Adobe CJA and Power BI to track division OKRs in web traffic and pre-sales engagement.", "Analyserar webbplatsens prestanda med Adobe CJA och Power BI för att följa divisionens OKR:er inom webbtrafik och pre-sales-engagemang."),
+        L("Collaborate cross-functionally with stakeholders across Business Areas, turning research and analytics insights into actionable improvements.", "Samarbetar tvärfunktionellt med intressenter inom olika affärsområden, och omvandlar forsknings- och analysinsikter till konkreta förbättringar.")
       ]},
-      { dates: "02/2024 - 08/2025", theme: L("EXPRESS DELIVERY PRODUCTS", "EXPRESSLEVERANSPRODUKTER"), place: L("Hanoi, Vietnam", "Hanoi, Vietnam"), role: L("Product Team Lead - Leader Under 25", "Produktteamledare - Leader Under 25"), company: L("Giao Hang Tiet Kiem JSC · 30,000+ employees, 1B+ packages", "Giao Hang Tiet Kiem JSC · 30 000+ anställda, 1 md+ paket"), points: [
+      { dates: "02/2024 - 08/2025", theme: L("EXPRESS DELIVERY PRODUCTS", "EXPRESSLEVERANSPRODUKTER"), place: L("Hanoi, Vietnam", "Hanoi, Vietnam"), role: "Product Owner", company: L("Giao Hang Tiet Kiem JSC · 30,000+ employees, 1B+ packages", "Giao Hang Tiet Kiem JSC · 30 000+ anställda, 1 md+ paket"), points: [
         L("Owned roadmap for 3 express delivery services handling 1M+ packages/day, driving 5% MoM revenue growth.", "Ägde roadmap för tre expressleveranstjänster med över 1 miljon paket/dag och 5 % intäktstillväxt per månad."),
         L("Maintained a prioritized backlog of 30+ weekly tasks using RICE and impact-effort frameworks.", "Höll en prioriterad backlog med 30+ uppgifter i veckan med RICE och impact-effort."),
         L("Led a 5-member team delivering 5 flagship projects yearly for 2,000 couriers and 3M+ sellers.", "Ledde ett team på fem som levererade fem flaggskeppsprojekt per år för 2 000 bud och 3 miljoner+ säljare."),
         L("Defined and tracked product KPIs in SQL and Power BI across 30,000+ couriers.", "Definierade och följde produkt-KPI:er i SQL och Power BI för 30 000+ bud.")
       ]},
-      { dates: "09/2021 - 02/2024", theme: L("COURIER APPS & DATA", "BUDAPPAR & DATA"), place: "Hanoi, Vietnam", role: "Product Owner / Business Analyst", company: "Giao Hang Tiet Kiem JSC", points: [
-        L("Owned end-to-end development of 2,000 courier applications - SRS/PRD, mock-ups, functional diagrams.", "Ägde utvecklingen av 2 000 budapplikationer från början till slut - SRS/PRD, skisser och funktionsdiagram."),
-        L("Built real-time SQL & Power BI dashboards reducing analysis time by 80%.", "Byggde realtidsdashboards i SQL och Power BI som kortade analystiden med 80 %.")
-      ]},
-      { dates: "01/2021 - 05/2021", theme: L("ENTERPRISE TRACKING PLATFORM", "SPÅRNINGSPLATTFORM"), place: "Hanoi, Vietnam", role: "Business Analyst", company: L("FPT Information System JSC · $2B+ revenue, 30+ countries", "FPT Information System JSC · 2 md+ USD i omsättning, 30+ länder"), points: [
-        L("Defined requirements for a tracking platform used by 300 managers across 53 cities.", "Definierade krav för en spårningsplattform som används av 300 chefer i 53 städer."),
-        L("Built real-time production & sales dashboards supporting C-level decisions.", "Byggde realtidsdashboards för produktion och försäljning som stöd för ledningsbeslut.")
+      { dates: "09/2023 - 02/2024", theme: L("COURIER APPS & DATA", "BUDAPPAR & DATA"), place: "Hanoi, Vietnam", role: "Business Analyst", company: "Giao Hang Tiet Kiem JSC", points: [
+        L("Facilitated stakeholder discussions and documented business requirements for 2,000 courier applications - SRS/PRD, mock-ups, functional diagrams.", "Faciliterade intressentdiskussioner och dokumenterade affärskrav för 2 000 budapplikationer - SRS/PRD, skisser och funktionsdiagram."),
+        L("Built real-time SQL & Power BI dashboards reducing analysis time by 80%, analyzing 3M+ customer and 2,000 courier data points.", "Byggde realtidsdashboards i SQL och Power BI som kortade analystiden med 80 % och analyserade data för 3M+ kunder och 2 000 bud.")
       ]}
     ];
 
-    const orgs = ["99Tech", "GHTK", "GHTK", "FPT IS"];
-    const years = ["2025", "2024", "2021", "2021"];
+    const orgs = ["Volvo Group", "GHTK", "GHTK"];
+    const years = ["2026", "2024", "2023"];
 
     const msData = [
-      { x: 0, y: 52, year: "2021", label: L("Business Analyst · FPT IS", "Business Analyst · FPT IS") },
-      { x: 22, y: 45.2, year: "", label: L("2021 · Product Owner · GHTK", "2021 · Produktägare · GHTK") },
-      { x: 63, y: 29.2, year: "2024", label: L("Product Team Lead · Leader Under 25", "Produktteamledare · Leader Under 25") },
-      { x: 100, y: 7, year: "2025", label: L("Product Ops Analyst · 99Tech", "Product Ops Analyst · 99Tech") }
+      { x: 0, y: 52, year: "2023", label: L("2023 · Business Analyst · GHTK", "2023 · Business Analyst · GHTK") },
+      { x: 50, y: 29.2, year: "2024", label: L("Product Owner · Leader Under 25", "Produktägare · Leader Under 25") },
+      { x: 100, y: 7, year: "2026", label: L("UX Design Intern · Volvo Group", "UX Design-praktikant · Volvo Group") }
     ];
     const hp = this.state.pt;
-    const introText = L("4+ years in e-logistics and digital platforms across Southeast Asia, delivering for 3M+ users - from courier apps moving a billion packages to express services shipping in under two hours. Strong in Agile delivery, requirements analysis and customer-centric design. \nFast-tracked into a Product Team Lead role (Leader Under 25), leading cross-functional initiatives at scale. Currently pursuing a Master's in Digital Leadership in Gothenburg, Sweden as a Swedish Institute scholar.", "4+ år inom e-logistik och digitala plattformar i Sydostasien, för över 3 miljoner användare - från budappar som flyttar en miljard paket till expresstjänster med leverans under två timmar. Stark inom agil leverans, kravanalys och kundcentrerad design.\n\nSnabbt befordrad till Product Team Lead (Leader Under 25) med ansvar för tvärfunktionella initiativ i stor skala.");
+    const introText = L("Hybrid UX designer and business analyst working on digital products, from emerging-market e-logistics in Southeast Asia to a global corporate environment. Product-minded, turns messy customer problems into clear recommendations for cross-functional stakeholders, using data and market trends. Now I am a UX Design Intern at Volvo Group, pursuing a Master's in Digital Leadership in Gothenburg as a Swedish Institute scholar.", "Hybrid UX-designer och affärsanalytiker som arbetar med digitala produkter, från e-logistik på tillväxtmarknader i Sydostasien till en global företagsmiljö. Produktorienterad, omvandlar röriga kundproblem till tydliga rekommendationer för tvärfunktionella intressenter, med hjälp av data och marknadstrender. Nu är jag UX Design-praktikant hos Volvo Group och läser en master i Digital Leadership i Göteborg som stipendiat hos Svenska institutet.");
     const ico = slug => "display: block; width: 18px; height: 18px; background: url(https://cdn.simpleicons.org/" + slug + "/1a1420) center/contain no-repeat";
-    const words = sv ? ["digitala produkter", "logistikplattformar", "budappar", "leveranssystem"] : ["digital products", "logistics platforms", "courier apps", "delivery systems"];
+    const words = sv ? ["digitala produkter", "logistikplattformar", "budappar", "leveranssystem", "globala webbplatser"] : ["digital products", "logistics platforms", "courier apps", "delivery systems", "global websites"];
     const word = words[this.state.word % words.length];
     const p = this.state.p;
     const chip = (top, side, offset) => "position: absolute; " + top + "; " + side + ": " + offset + "; display: flex; align-items: center; gap: 8px; padding: 10px 15px; border-radius: 14px; background: rgba(255,255,255,0.86); backdrop-filter: blur(10px); border: 1px solid rgba(26,20,32,0.07); box-shadow: 0 12px 28px rgba(160,90,130,0.16); font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12.5px; font-weight: 600; white-space: nowrap; animation: rise .7s ease both";
@@ -906,24 +902,7 @@ class Component extends DCLogic {
       },
       glowStyle: "position: absolute; left: " + this.state.mx + "%; top: " + this.state.my + "%; width: 460px; height: 460px; margin: -230px 0 0 -230px; border-radius: 50%; background: radial-gradient(circle, rgba(255,111,165,0.42), rgba(165,107,255,0.18) 45%, rgba(255,255,255,0) 70%); filter: blur(48px); transition: left .5s cubic-bezier(.22,.9,.24,1), top .5s cubic-bezier(.22,.9,.24,1); will-change: left, top",
       heroTags: ["PRODUCT OWNER", "BUSINESS ANALYST", "PMP®", sv ? "GÖTEBORG, SVERIGE" : "GOTHENBURG, SWEDEN"],
-      introEl: (() => {
-        const keys = sv
-          ? ["Product Team Lead (Leader Under 25)"]
-          : ["Product Team Lead role (Leader Under 25)"];
-        const hi = { fontWeight: 700, color: "#1a1420", background: "linear-gradient(180deg, transparent 64%, #FFD9E8 64%)", padding: "0 2px" };
-        let rest = introText;
-        const out = [];
-        let key = 0;
-        keys.forEach(k => {
-          const i = rest.indexOf(k);
-          if (i === -1) return;
-          out.push(React.createElement("span", { key: key++ }, rest.slice(0, i)));
-          out.push(React.createElement("span", { key: key++, style: hi }, k));
-          rest = rest.slice(i + k.length);
-        });
-        out.push(React.createElement("span", { key: key++ }, rest));
-        return out;
-      })(),
+      introEl: introText,
       heroChips: [
         { label: "3M+ users", style: chip("top: 34px", "left", "-58px") },
         { label: "1B+ packages", style: chip("top: 216px", "left", "-84px") },
@@ -936,6 +915,7 @@ class Component extends DCLogic {
       nextExp: () => this.scrollTo(this.state.active + 1),
       prevExp: () => this.scrollTo(this.state.active - 1),
       jobs: jobs.map((j, i) => Object.assign({}, j, { focus: () => this.scrollTo(i) })),
+      tlGridStyle: "position: relative; display: grid; grid-template-columns: repeat(" + jobs.length + ", minmax(0, 1fr))",
       timeline: jobs.map((j, i) => ({
         year: years[i], org: orgs[i], role: j.role, go: () => this.scrollTo(i),
         style: "display: grid; justify-items: start; gap: 6px; padding: 0 0 0 0; background: none; border: none; cursor: pointer; font: inherit; text-align: left; color: #B0326A",
@@ -955,9 +935,9 @@ class Component extends DCLogic {
         buildStatic: L("digital products", "digitala produkter"),
         buildTail: L("millions actually use.", "som miljoner faktiskt använder."),
         liveLabel: L("IMPACT AT SCALE", "EFFEKT I SKALA"),
-        heroMeta: L("PRODUCT OWNER · BUSINESS ANALYST · PRODUCT TEAM LEAD · PMP® · GOTHENBURG, SWEDEN", "PRODUKTÄGARE · BUSINESS ANALYST · PRODUKTTEAMLEDARE · PMP® · GÖTEBORG, SVERIGE"),
+        heroMeta: L("UX DESIGN · PRODUCT OWNER · BUSINESS ANALYST · PMP® · GOTHENBURG, SWEDEN", "UX-DESIGN · PRODUKTÄGARE · BUSINESS ANALYST · PMP® · GÖTEBORG, SVERIGE"),
         basedIn: L("BASED IN GOTHENBURG, SWEDEN", "BASERAD I GÖTEBORG, SVERIGE"),
-        intro: L("4+ years in e-logistics and digital platforms across Southeast Asia, delivering for 3M+ users - from courier apps moving a billion packages to express services shipping in under two hours. Strong in Agile delivery, requirements analysis and customer-centric design. \nFast-tracked into a Product Team Lead role (Leader Under 25), leading cross-functional initiatives at scale. Currently pursuing a Master's in Digital Leadership in Gothenburg, Sweden as a Swedish Institute scholar.", "4+ år inom e-logistik och digitala plattformar i Sydostasien, för över 3 miljoner användare - från budappar som flyttar en miljard paket till expresstjänster med leverans under två timmar. Stark inom agil leverans, kravanalys och kundcentrerad design.\n\nSnabbt befordrad till Product Team Lead (Leader Under 25) med ansvar för tvärfunktionella initiativ i stor skala."),
+        intro: L("Hybrid UX designer and business analyst working on digital products, from emerging-market e-logistics in Southeast Asia to a global corporate environment. Product-minded, turns messy customer problems into clear recommendations for cross-functional stakeholders, using data and market trends. \nExperienced in Agile software delivery and customer-centric design, with an interest in AI applications, digital ecosystems and business transformation in transport solutions. Now I am a UX Design Intern at Volvo Group, pursuing a Master's in Digital Leadership in Gothenburg as a Swedish Institute scholar.", "Hybrid UX-designer och affärsanalytiker som arbetar med digitala produkter, från e-logistik på tillväxtmarknader i Sydostasien till en global företagsmiljö. Produktorienterad, omvandlar röriga kundproblem till tydliga rekommendationer för tvärfunktionella intressenter, med hjälp av data och marknadstrender.\n\nErfaren av agil mjukvaruleverans och kundcentrerad design, med intresse för AI-tillämpningar, digitala ekosystem och affärstransformation inom transportlösningar. Nu är jag UX Design-praktikant hos Volvo Group och läser en master i Digital Leadership i Göteborg som stipendiat hos Svenska institutet."),
         intro2: L("Currently pursuing a Master's in Digital Leadership in Gothenburg, Sweden as a Swedish Institute scholar.", "Studerar just nu en master i Digital Leadership i Göteborg som Swedish Institute-stipendiat."),
         cvBtn: L("Download CV", "Ladda ner CV"), liBtn: L("My LinkedIn", "Min LinkedIn"),
         skills: L("Product skills", "Produktkompetens"), stack: L("Stack", "Verktyg"), languages: L("Languages", "Språk"),
@@ -976,8 +956,7 @@ class Component extends DCLogic {
         quote: L("Having had the privilege of witnessing Mai Anh's 4-year journey from a dedicated employee to one of the company's youngest Team Leaders, I value her professionalism and leadership skills, especially in projects that demand innovation, high performance and tight deadlines. As a team leader she has demonstrated strong team management capabilities, coordinating effectively across multiple departments to ensure products were delivered on time and to a high standard. Beyond her technical expertise, Mai Anh is consistently recognized by colleagues as passionate, dedicated, and someone who brings positive energy to the team.", "Jag har haft förmånen att följa Mai Anhs fyraåriga resa från engagerad medarbetare till en av företagets yngsta teamledare, och jag uppskattar hennes professionalism och ledarskap – särskilt i projekt som kräver innovation, hög prestation och snäva deadlines. Som teamledare har hon visat stark förmåga att leda team och koordinera flera avdelningar så att produkter levererades i tid och med hög kvalitet. Utöver sin tekniska kompetens beskrivs Mai Anh genomgående av kollegor som passionerad, hängiven och någon som ger teamet positiv energi.")
       },
       stats: [
-        { n: 4, suffix: "+", label: L("years of experience", "års erfarenhet"), detail: L("E-logistics, Digital Platforms, Gaming Tech", "E-logistik, Digitala Plattformar, Speltech") },
-        { n: 3, suffix: "", label: L("countries", "länder"), detail: "Sweden, Singapore, Vietnam" },
+        { n: 2, suffix: "", label: L("countries", "länder"), detail: "Sweden, Vietnam" },
         { n: 5, suffix: "+", label: L("completed projects", "genomförda projekt"), detail: L("Ideation To Go-To-Market Ownership", "Från Idé Till Lansering") }
       ].map((s, i) => ({
         label: s.label, detail: s.detail,
@@ -1037,16 +1016,21 @@ class Component extends DCLogic {
       ],
       projects: [
         { slot: "proj-xfast", slotHint: "XFAST / GHTK courier photo", page: "xfast.html", num: "01 / 03", title: "XFAST - Express Delivery", org: "Giao Hang Tiet Kiem", blurb: L("Owned end-to-end product development from ideation to go-to-market for 1-2 hour delivery services.", "Ägde produktutvecklingen från idé till lansering för leveranstjänster på 1-2 timmar."), metrics: [L("100k+ packages/day", "100k+ paket/dag"), "4.9 CSAT"], links: [] },
-        { slot: "proj-heady", slotHint: "The Heady Day content still", page: "the-heady-day.html", num: "02 / 03", title: "The Heady Day", org: L("Personal · Social media", "Eget projekt · Sociala medier"), blurb: L("Built a content channel about studying in Sweden, growing it organically across short-form video platforms.", "Byggde en kanal om att studera i Sverige och växte den organiskt på kortvideoplattformar."), metrics: [L("2M+ views on Threads", "2M+ visningar på Threads"), L("1M+ on TikTok", "1M+ på TikTok")], links: [
-          { label: "TikTok", href: "https://www.tiktok.com/@theheadyday", iconStyle: ico("tiktok") },
-          { label: "Threads", href: "https://www.threads.com/@amber_nguyenn", iconStyle: ico("threads") }
-        ]},
-        { slot: "proj-neural", slotHint: "Neural Networkers event photo", page: "neural-networkers.html", num: "03 / 03", title: "Neural Networkers", org: L("Social Media Manager · University of Gothenburg", "Social Media Manager · Göteborgs universitet"), blurb: L("Run social media for the student association for Digital Leadership, Human-Centered AI and Communications - building its voice across Instagram and event campaigns.", "Ansvarar för sociala medier för studentföreningen inom Digital Leadership, Human-Centered AI och Communications - bygger dess röst på Instagram och i eventkampanjer."), metrics: [L("45+ master's students", "45+ masterstudenter"), L("12+ alumni", "12+ alumner")], links: [
+        { slot: "proj-neural", slotHint: "Neural Networkers event photo", page: "neural-networkers.html", num: "02 / 03", title: "Neural Networkers", org: L("Social Media Manager · University of Gothenburg", "Social Media Manager · Göteborgs universitet"), blurb: L("Run social media for the student association for Digital Leadership, Human-Centered AI and Communications - building its voice across Instagram and event campaigns.", "Ansvarar för sociala medier för studentföreningen inom Digital Leadership, Human-Centered AI och Communications - bygger dess röst på Instagram och i eventkampanjer."), metrics: [L("45+ master's students", "45+ masterstudenter"), L("12+ alumni", "12+ alumner")], links: [
           { label: "Instagram", href: "https://www.instagram.com/neuralnetworkers/", iconStyle: ico("instagram") },
           { label: "Website", href: "https://www.neuralnetworkers.se/", iconStyle: ico("googlechrome") }
+        ]},
+        { slot: "proj-heady", slotHint: "The Heady Day content still", page: "the-heady-day.html", num: "03 / 03", title: "The Heady Day", org: L("Personal · Social media", "Eget projekt · Sociala medier"), blurb: L("Built a content channel about studying in Sweden, growing it organically across short-form video platforms.", "Byggde en kanal om att studera i Sverige och växte den organiskt på kortvideoplattformar."), metrics: [L("2M+ views on Threads", "2M+ visningar på Threads"), L("1M+ on TikTok", "1M+ på TikTok")], links: [
+          { label: "TikTok", href: "https://www.tiktok.com/@theheadyday", iconStyle: ico("tiktok") },
+          { label: "Threads", href: "https://www.threads.com/@amber_nguyenn", iconStyle: ico("threads") }
         ]}
       ].map(p => Object.assign({}, p, { readMoreLabel: (sv ? "Läs mer om " : "Read more about ") + p.title })),
       research: [].concat([
+        { kind: L("Internship Project", "Praktikprojekt"), meta: L("2026 · Volvo Group", "2026 · Volvo Group"), badge: L("Ongoing", "Pågående"), title: L("AI-assisted accessibility audit tool (WCAG 2.2)", "AI-assisterat tillgänglighetsgranskningsverktyg (WCAG 2.2)"), summary: L("Built an AI-assisted internal tool to audit Volvo Trucks' public websites against WCAG 2.2 accessibility standards, with real-time dashboards for tracking compliance.", "Byggde ett AI-assisterat internt verktyg för att granska Volvo Trucks publika webbplatser mot tillgänglighetsstandarden WCAG 2.2, med realtidsdashboards för att följa upp efterlevnaden."), highlights: [
+          L("Automates accessibility checks against WCAG 2.2 criteria across Volvo Trucks' public sites.", "Automatiserar tillgänglighetskontroller mot WCAG 2.2-kriterier över Volvo Trucks publika webbplatser."),
+          L("Real-time dashboards cut manual reporting work by 90%.", "Realtidsdashboards minskade manuellt rapporteringsarbete med 90 %."),
+          L("Supports Volvo's sustainability and inclusion goals by turning digital accessibility into a measurable, trackable standard across the brand's public sites.", "Stödjer Volvos hållbarhets- och inkluderingsmål genom att göra digital tillgänglighet till en mätbar, spårbar standard över varumärkets publika webbplatser.")
+        ] },
         { kind: L("Project work", "Projektarbete"), meta: L("2026 · University of Gothenburg", "2026 · Göteborgs universitet"), badge: L("Qualitative study", "Kvalitativ studie"), title: L("The impact of generative AI on organizational workflow structures at AstraZeneca", "Generativ AI:s påverkan på organisatoriska arbetsflöden på AstraZeneca"), summary: L("Interview-led study of how AstraZeneca employees restructure day-to-day workflows as generative AI enters their tooling.", "Intervjubaserad studie av hur AstraZenecas medarbetare omformar sina dagliga arbetsflöden när generativ AI kommer in i verktygen."), highlights: [
           L("Mapped where AI shifted decision-making, review loops and role boundaries.", "Kartlade var AI flyttade beslutsfattande, granskningsloopar och rollgränser."),
           L("Framed adoption barriers as change-management rather than technology problems.", "Ramade in adoptionshinder som förändringsledning snarare än teknikproblem.")
